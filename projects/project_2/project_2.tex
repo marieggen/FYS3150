@@ -1,0 +1,63 @@
+\documentclass[12pt]{article}
+\usepackage[top=3cm, bottom=3cm, right=3cm, left=3cm]{geometry}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{ulem}
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+\begin{document}
+\title{FYS3150 - PROJECT 2 - AUTUMN 2015}
+\author{Mari Dahl Eggen}
+\maketitle
+
+\newpage
+
+\begin{flushleft}
+\begin{abstract}
+hei
+\end{abstract}
+\section*{Introduction}
+
+\newpage
+\section*{Theory}
+\subsection*{Similarity transformations}
+In the following we assume that the matrix $\bf A$ is a real and symmetric matrix, ${\bf A}\in \mathbb{R}^{n\times n}$. Then, there exists a set of real orthogonal matrices $\bf S_i$, such that \\
+\vspace{5mm}
+\begin{equation}\label{eq:similarity_transformation}
+{\bf S_n^T...S_1^T A S_1...S_n} = {\bf D},
+\end{equation}
+\vspace{5mm}
+where ${\bf S_i^T S_i = S_i S_i^T = I}$, where ${\bf I}$ is the identity matrix, and $\bf D$ is given by\\
+\vspace{5mm}
+$${\bf D} = 
+\begin{bmatrix}
+       \lambda_1 & 0 & 0 & \dots & 0          \\
+       0 & \lambda_2 & 0 & \dots & 0 \\
+       \vdots &  & \ddots & & \vdots \\
+       0 & \dots & \dots & \dots & \lambda_n
+\end{bmatrix},$$\\ 
+\vspace{5mm}
+where $\lambda_1, \lambda_2,...,\lambda_n$ is the eigenvalues of $\bf A$. If we look at a single similarity transformation, where $\bf B = S^T A S$ is a similarity transform of $\bf A$, we can show that $\bf B$ and $\bf A$ have the same eigenvalues, but in general not the same eigenvectors. We starts out with the eigenvalue equation of $\bf A$.\\
+\vspace{5mm}
+$${\bf Ax } = \lambda\bf x \quad\Rightarrow\quad {\bf S^T A I x} = \lambda {\bf S^T x}$$\\
+$$\quad\Rightarrow\quad {\bf (S^T A S) (S^T x)} = \lambda {\bf (S^T x)} \quad\Rightarrow\quad {\bf B (S^T x)} = \lambda {\bf (S^T x)}$$\\
+\vspace{5mm}
+We then see that $\bf B$ and $\bf A$ have the same eigenvaules, but when $\bf A$ has the eigenvector $\bf x$, $\bf B$ has the eigenvector $\bf S^T x$. We then know for sure that the matrix $\bf D$ in Equation (\ref{eq:similarity_transformation}) gives the eigenvalues of $\bf A$.
+\newpage
+\subsection*{Jacobi's method}
+This is a method one can use to obtain the eigenvalue matrix $\bf D$ in Equation (\ref{eq:similarity_transformation}).
+
+
+\newpage
+\section*{Method}
+
+\section*{Results and discussion}
+
+\section*{Conclusion}
+
+
+\end{flushleft}
+\end{document}
