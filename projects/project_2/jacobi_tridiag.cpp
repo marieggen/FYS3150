@@ -1,6 +1,9 @@
 #include <iostream>
 #include <armadillo>
 #include <cmath>
+#include <fstream>
+#include <iomanip>
+#include "time.h"
 using namespace std;
 using namespace arma;
 
@@ -8,79 +11,84 @@ using namespace arma;
 // void rotate(mat& A, mat& S, int k, int l, int n);
 // void jacobi(int eps, mat& A, mat& S, int n);
 
+ofstream ofile;
 double maxNonDiag(mat& A, int* k, int* l, int n);
 void rotate(mat& A, mat& S, int k, int l, int n);
 void jacobi(int eps, mat& A, mat& S, int n, int m);
 
 int main(int argc,char** argv)
 {
-	/*
-	int n = 10;
-	int m = n+2;
-	double eps = 10e-8;
-	double rho_min = 0.0;
-	double rho_max = 5.0;
-	double h = (rho_max-rho_min)/(m);
-	double h_sq = h*h;
-	double k1 = -1.0/h_sq;
-
-	//Initialize matrices and vectors
-	mat A = eye<mat>(n,n);  //tridiag vector
-	vec V(n);				//Potential = rho^2
-	mat S = eye<mat>(n,n);	//Identity matrix
-
-	for(int i=0 ; i<n ; i++){
-		V(i) = (i+1)*h*(i+1)*h; 
-
-		A(i,i) = (2.0/h_sq)+V(i);
-		if(i<n-1){
-
-			A(i,i+1) = k1;
-			A(i+1,i) = k1;
-		}
+	if( argc <= 4 )
+	{
+		cout << "Bad Usage of " << argv[0] << ": write also"
+		 "1: outputfile eigenvalues 2:outputfile eigenvectors"
+		 "3:matrix size 4:strength of oscillator potential, "
+		 "on the same command line." << endl;
+		exit(1);
 	}
-	//cout << A << endl;
-	//Checking eig.vals of A
-	mat eigval = eig_sym(A);
-	cout << eigval(0) << " , " << eigval(1) << " , " << eigval(2) << endl;	
+	else
+	{
+		char* eigval = argv[1];
+		char* eigvec = argv[2];
+		int n = atoi(argv[3]); // atoi = ascii to int, atof = ascii to float
+		float omega_r = atof(argv[4]);
 
-	//Run jacobi-method
-	jacobi(eps,A,S,n,m);
-	cout << A(0,0) << " , " << A(1,1) << " , " << A(2,2) << endl;
-*/
-	
-	int n = 4;
-	int m = n+2;
-	double eps = 10e-8;
-	mat S = eye<mat>(n,n);
 
-	mat A(n,n);
-	/*
-	for(int i=0 ; i<n ; i++){
-		for(int j=0 ; j<n ; j++){
-			A(i,j) = (double) j+2* (double) i;
-		}
-	}*/
+		int m = n+2;
+		double eps = 10e-8;
+		double rho_min = 0.0;
+		double rho_max = 5.0;
+		double h = (rho_max-rho_min)/(m);
+		double h_sq = h*h;
+		double k1 = -1.0/h_sq;
 
-	for(int i=0 ; i<n ; i++){
-		for(int j=0 ; j<n ; j++){
-			if(i==j){
-				A(i,j) = 2;
-			}
-			else{
-				A(i,j) = 3;
+		//Initialize matrices and vectors
+		mat A = eye<mat>(n,n);  //tridiag vector
+		vec V(n);				//Potential = rho^2
+		mat S = eye<mat>(n,n);	//Identity matrix
+
+		for(int i=0 ; i<n ; i++){
+			double rho = (i+1)*h;
+			double rho_sq = rho*rho;
+			//V(i) = rho_sq; 
+			V(i) = (omega_r*omega_r*rho_sq) + (1.0/rho);
+
+			A(i,i) = (2.0/h_sq)+V(i);
+			if(i<n-1){
+
+				A(i,i+1) = k1;
+				A(i+1,i) = k1;
 			}
 		}
+		//cout << A << endl;
+		//Checking eig.vals of A
+		mat test_eigval = eig_sym(A);
+		//cout << eigval << endl;	
+
+		//Run jacobi-method
+		jacobi(eps,A,S,n,m);
+		//cout << A(0,0) << " , " << A(1,1) << " , " << A(2,2) << endl;
+		
+		//Write eigenvalues and eigenvec's to files
+		ofile.open(eigval);
+		for(int i=0;i<n;i++)
+		{
+			ofile << setprecision(16) << A(i,i) << endl;
+		}
+		ofile.close();
+
+		ofile.open(eigvec);
+		ofile << n << endl;
+		for(int i=0;i<n;i++){
+			for(int j=0;j<n;j++)
+			{
+
+			ofile << setprecision(16) << S(i,j) << endl;
+
+			}
+		}
+		ofile.close();
 	}
-
-	cout << A << endl;
-
-	mat eigval = eig_sym(A);
-	cout << eigval << endl;
-
-	jacobi(eps,A,S,n,m);
-	cout << A(0,0) << " , " << A(1,1) << " , " << A(2,2) << "," << A(3,3) << endl;
-	
 
 	return 0;
 }
@@ -124,7 +132,7 @@ double maxNonDiag(mat& A, int* k, int* l, int n)
 			}
 		}
 	}
-	cout << "i=" << *k << "and j=" << *l << endl;
+	//cout << "i=" << *k << "and j=" << *l << endl;
 	return max;
 }
 
