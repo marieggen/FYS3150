@@ -15,8 +15,9 @@ n = 200
 
 runInTerminal(compileCommand)
 
-o = 1
-for omega_r in [0.01, 0.5, 1.0, 5.0]:
+o = 100
+#0.01, 0.5, 1.0, 5.0
+for omega_r in [1.0]:
 	eigval = "%s%d%d.txt" % (eigvalues, n, o)
 	eigvec = "%s%d%d.txt" % (eigvectors, n, o)
 	runInTerminal("%s %s %s %d %f" % (programName, eigval, eigvec, n, omega_r))

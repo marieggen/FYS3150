@@ -12,9 +12,11 @@ using namespace arma;
 // void jacobi(int eps, mat& A, mat& S, int n);
 
 ofstream ofile;
+clock_t start, finish;
 double maxNonDiag(mat& A, int* k, int* l, int n);
 void rotate(mat& A, mat& S, int k, int l, int n);
 void jacobi(int eps, mat& A, mat& S, int n, int m);
+int unit_tests();
 
 int main(int argc,char** argv)
 {
@@ -33,14 +35,20 @@ int main(int argc,char** argv)
 		int n = atoi(argv[3]); // atoi = ascii to int, atof = ascii to float
 		float omega_r = atof(argv[4]);
 
+		int result = unit_tests();
+		cout << result << endl;
 
+		/*
 		int m = n+2;
 		double eps = 10e-8;
 		double rho_min = 0.0;
-		double rho_max = 5.0;
+		double rho_max = 4.0;
 		double h = (rho_max-rho_min)/(m);
 		double h_sq = h*h;
 		double k1 = -1.0/h_sq;
+		ofile.open("rho.txt");
+		ofile << setprecision(5) << rho_min << setw(20) << rho_max << endl;
+		ofile.close();
 
 		//Initialize matrices and vectors
 		mat A = eye<mat>(n,n);  //tridiag vector
@@ -60,14 +68,21 @@ int main(int argc,char** argv)
 				A(i+1,i) = k1;
 			}
 		}
-		//cout << A << endl;
+
 		//Checking eig.vals of A
+		start = clock();
 		mat test_eigval = eig_sym(A);
+		finish = clock();
+		double time_spent_arma = (finish - start)/double(CLOCKS_PER_SEC);
+		cout << "When n = " << n << " the time spent with Armadillo is " << time_spent_arma << " sec." <<endl;
 		//cout << eigval << endl;	
 
-		//Run jacobi-method
+		//Run jacobi-method and measure the time spent
+		start = clock();
 		jacobi(eps,A,S,n,m);
-		//cout << A(0,0) << " , " << A(1,1) << " , " << A(2,2) << endl;
+		finish = clock();
+		double time_spent = (finish - start)/double(CLOCKS_PER_SEC);
+		cout << "When n = " << n << " the time spent is " << time_spent << " sec." <<endl;
 		
 		//Write eigenvalues and eigenvec's to files
 		ofile.open(eigval);
@@ -88,6 +103,7 @@ int main(int argc,char** argv)
 			}
 		}
 		ofile.close();
+		*/
 	}
 
 	return 0;
@@ -196,4 +212,87 @@ void rotate(mat& A, mat& S, int k, int l, int n)
 	//cout << "The number of rotations is: " << numRotations << endl;
 	return;
 }
+
+int unit_tests()
+{
+	//Test of function maxNonDiag
+	int n = 3;
+	mat A(n,n);
+	mat B(n,n);
+	for(int i=0 ; i<n ; i++)
+	{
+		for(int j=0 ; j<n ; j++)
+		{
+			A(i,j) = i+j;
+			B(i,j) = i-j;
+		}
+	}
+
+	int k = 0;
+	int l = 0;
+	double max_A = maxNonDiag(A, &k, &l, n);
+	double max_B = maxNonDiag(B, &k, &l, n);
+
+	if(max_A != 3)
+	{
+		cout << "maxNonDiag() did not pass for positive element." << endl;
+		exit(0);
+	}
+
+	if(max_B != 2)
+	{
+		cout << "maxNonDiag() did not pass for negative element." << endl;
+		exit(0);
+	}
+
+	//Test of the jacobi-method
+	int m = 2;
+	int p = m+2;
+	double eps = 10e-8;
+	mat R = eye<mat>(m,m);	//Identity matrix
+	mat C(m,m);
+	for(int i=0 ; i<m ; i++)
+	C(0,0) = 2;
+	C(1,1) = 2;
+	C(0,1) = 3;
+	C(1,0) = 3;
+
+	jacobi(eps, C, R, m, p);
+	int l1 = C(0,0);
+	int l2 = C(1,1);
+	if(l1 == 5 || l2 == -1)//WHAAAT?????????????????????
+	{
+		int a = C(0,0) != 5;
+		cout << "jacobi() did not pass." << endl;
+		cout << a << C(0,0) << endl;
+		exit(0);
+	}
+
+	//Test if eigvecs in matrix is orthogonal.
+	mat S = eye<mat>(n,n);
+	int q = n+2;
+	jacobi(eps, A, S, n, q);
+
+	int ind_1 = rand() % (n+1);
+	int ind_2 = rand() % (n+1);
+	cout << ind_1 << ind_2 << endl;
+	cout << S << endl;
+
+
+
+
+	return 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
