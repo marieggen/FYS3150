@@ -38,11 +38,10 @@ int main(int argc,char** argv)
 		int result = unit_tests();
 		cout << result << endl;
 
-		/*
 		int m = n+2;
 		double eps = 10e-8;
 		double rho_min = 0.0;
-		double rho_max = 4.0;
+		double rho_max = 40.0;
 		double h = (rho_max-rho_min)/(m);
 		double h_sq = h*h;
 		double k1 = -1.0/h_sq;
@@ -103,7 +102,6 @@ int main(int argc,char** argv)
 			}
 		}
 		ofile.close();
-		*/
 	}
 
 	return 0;
@@ -123,13 +121,31 @@ void jacobi(int eps, mat& A, mat& S, int n, int m)
 		//cout << "max element in matrix: "<< maxElement << endl;
 		rotate(A,S,k,l,n);
 		iterations++;
-		/*
+
 		//Test if vectors in S is orthonormal
-		if((iterations % 50) == 0)
+		if((iterations % 10000) == 0)
 		{
-			S()
+			//cout << "test" << endl;
+			//initialize random seed
+  			srand (time(NULL));
+			//generate secret number between 0 and n(matrix-size):
+  			int ind_1 = rand() % n + 0;
+  			int ind_2 = rand() % n + 0;
+			vec vec_1(n);
+			vec vec_2(n);
+
+			vec_1 = S.col(ind_1);
+			vec_2 = S.col(ind_2);
+
+			double prod = dot(vec_1,vec_2);
+			double eps_vec = 10e-10;
+			if(fabs(prod) > eps_vec)
+			{
+				cout << "Something went wrong. Column "
+				<< ind_1 << " and " << ind_2 
+				<< " in matrix S are not orthogonal." << endl;
+			} 
 		}
-		*/
 	}
 
 	//cout << "number of rotations: "<< iterations-1 << endl;
@@ -266,7 +282,7 @@ int unit_tests()
 	jacobi(eps, C, R, m, p);
 	double l1 = C(0,0);
 	double l2 = C(1,1);
-	double epsilon = 0.0;
+	double epsilon = 10e-10;
 
 	if(fabs(l1-5) > epsilon || fabs(l2+1) > epsilon)
 	{
@@ -276,33 +292,7 @@ int unit_tests()
 		exit(0);
 	}
 
-	//Test if eigvecs in matrix is orthogonal.
-	/*
-	mat S = eye<mat>(n,n);
-	int q = n+2;
-	jacobi(eps, A, S, n, q);
-
-	int ind_1 = rand() % (n+1);
-	int ind_2 = rand() % (n+1);
-	cout << ind_1 << ind_2 << endl;
-	cout << S << endl;
-	*/
-
-
-
-
 	return 0;
 }
-
-
-
-
-
-
-
-
-
-
-
 
 

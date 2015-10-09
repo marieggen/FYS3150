@@ -1,11 +1,8 @@
 Dependence of n_step and rho_max.
 
-n_step = 100: (When n = 100 the time spent is 2.3806 sec.)
-(When n = 100 the time spent with Armadillo is 0.002612 sec.)
-- rho = 2.0: l1 = , l2 = , l3 = 
-- rho = 5.0: l1 = , l2 = , l3 =
-- rho = 8.0: l1 = , l2 = , l3 =
-- rho = 10.0: l1 = , l2 = , l3 =
+n_step = 100: (When n = 100 the time spent is 2.29362 sec.)
+(When n = 100 the time spent with Armadillo is 0.001588 sec.)
+- rho = 4.0: l1 = 4.057465128093521, l2 = 7.914480465652877, l3 = 11.939814098524820
 
 n_step = 200: (When n = 200 the time spent is 35.2186 sec.)
 (When n = 200 the time spent with Armadillo is 0.010321 sec.)
@@ -17,7 +14,7 @@ n_step = 200: (When n = 200 the time spent is 35.2186 sec.)
 
 n_step = 300: (When n = 300 the time spent is 169.327 sec.)
 (When n = 300 the time spent with Armadillo is 0.022403 sec.)
-- rho = 5.0: l1 = , l2 = , l3 = 
+- rho = 5.0: l1 = 2.999914346330580, l2 = 6.999574486998550, l3 = 10.999178007660880
 
 n_step = 400: (When n = 400 the time spent is 527.24 sec.)
 (When n = 400 the time spent with Armadillo is 0.024942 sec.)

@@ -14,16 +14,20 @@ format long
 % eigval_infile ='eigval_2002.txt';
 % eigvec_infile ='eigvec_2002.txt';
 
-eigval_infile ='eigval_2001.txt';
-eigvec_infile ='eigvec_2001.txt';
+% eigval_infile ='eigval_100100.txt';
+% eigvec_infile ='eigvec_100100.txt';
+
+eigval_infile = ['eigval_30025.txt';'eigval_30020.txt'];%omega=1/4=0.25 and omega = 1/20=0.05
+eigvec_infile = ['eigvec_30025.txt';'eigvec_30020.txt'];%omega=1/4=0.25 and omega = 1/20=0.05
+l_real = [0.6250;0.1750];
 
 rho_file = 'rho.txt';
 
 
 %for i=1:4
-for i =1:1
-    A = load(eigval_infile(i,:));
-    B = load(eigvec_infile(i,:));
+for j =1:2
+    A = load(eigval_infile(j,:));
+    B = load(eigvec_infile(j,:));
     rho = load(rho_file(:));
 
     n = B(1);
@@ -73,14 +77,19 @@ for i =1:1
     hold('on')
     
     %print three first eigenvalues
-%     eigval(1)
-%     eigval(2)
-%     eigval(3)
+    %eigval(1)
+    %eigval(2)
+    %eigval(3)
+    
+    %test for omega=1/4 and omega=1/20
+    eig_real = l_real(j);
+    eig_num = eigval(1)/2.0;
+    rel_error = abs(eig_real-eig_num)/eig_real
+    
 end
 
 
-    
-    
+
     
     
     
