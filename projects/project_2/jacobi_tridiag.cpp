@@ -123,6 +123,13 @@ void jacobi(int eps, mat& A, mat& S, int n, int m)
 		//cout << "max element in matrix: "<< maxElement << endl;
 		rotate(A,S,k,l,n);
 		iterations++;
+		/*
+		//Test if vectors in S is orthonormal
+		if((iterations % 50) == 0)
+		{
+			S()
+		}
+		*/
 	}
 
 	//cout << "number of rotations: "<< iterations-1 << endl;
@@ -252,23 +259,25 @@ int unit_tests()
 	mat R = eye<mat>(m,m);	//Identity matrix
 	mat C(m,m);
 	for(int i=0 ; i<m ; i++)
-	C(0,0) = 2;
-	C(1,1) = 2;
-	C(0,1) = 3;
-	C(1,0) = 3;
-
+	C(0,0) = 2.0;
+	C(1,1) = 2.0;
+	C(0,1) = 3.0;
+	C(1,0) = 3.0;
 	jacobi(eps, C, R, m, p);
-	int l1 = C(0,0);
-	int l2 = C(1,1);
-	if(l1 == 5 || l2 == -1)//WHAAAT?????????????????????
+	double l1 = C(0,0);
+	double l2 = C(1,1);
+	double epsilon = 0.0;
+
+	if(fabs(l1-5) > epsilon || fabs(l2+1) > epsilon)
 	{
 		int a = C(0,0) != 5;
 		cout << "jacobi() did not pass." << endl;
-		cout << a << C(0,0) << endl;
+		cout << a << C(1,1) << endl;
 		exit(0);
 	}
 
 	//Test if eigvecs in matrix is orthogonal.
+	/*
 	mat S = eye<mat>(n,n);
 	int q = n+2;
 	jacobi(eps, A, S, n, q);
@@ -277,6 +286,7 @@ int unit_tests()
 	int ind_2 = rand() % (n+1);
 	cout << ind_1 << ind_2 << endl;
 	cout << S << endl;
+	*/
 
 
 
