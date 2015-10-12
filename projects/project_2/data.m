@@ -14,8 +14,8 @@ format long
 % eigval_infile ='eigval_2002.txt';
 % eigvec_infile ='eigvec_2002.txt';
 
-% eigval_infile ='eigval_100100.txt';
-% eigvec_infile ='eigvec_100100.txt';
+%  eigval_infile ='eigval_200100.txt';
+%  eigvec_infile ='eigvec_200100.txt';
 
 eigval_infile = ['eigval_30025.txt';'eigval_30020.txt'];%omega=1/4=0.25 and omega = 1/20=0.05
 eigvec_infile = ['eigvec_30025.txt';'eigvec_30020.txt'];%omega=1/4=0.25 and omega = 1/20=0.05
@@ -69,24 +69,32 @@ for j =1:2
    C = 1.0/(sum(vec_1)*h);
    vec_1C = C*vec_1;
     
-    plot(rho,vec_1C)
-    xlabel('\rho = r/\alpha [dim.less]','fontsize',16)
-    ylabel('|\psi(\rho)|^2 [dim.less]','fontsize',16)
-    h = legend('\omega_r = 0.01','\omega_r = 5.0','fontsize',20);
-    set(h,'FontSize',16)
-    hold('on')
+%     plot(rho,vec_1C)
+%     xlabel('\rho = r/\alpha','fontsize',16)
+%     ylabel('|\psi(\rho)|^2','fontsize',16)
+%     h = legend('\omega_r = 0.01','\omega_r = 5.0','fontsize',20);
+%     set(h,'FontSize',16)
+%     hold('on')
     
     %print three first eigenvalues
-    %eigval(1)
-    %eigval(2)
-    %eigval(3)
+%     eigval(1)
+%     eigval(2)
+%     eigval(3)
     
     %test for omega=1/4 and omega=1/20
     eig_real = l_real(j);
-    eig_num = eigval(1)/2.0;
-    rel_error = abs(eig_real-eig_num)/eig_real
+    eig_num = eigval(1)/2.0;%numerically calc result
+    %is a factor 0.5 wrong.
+    rel_error = abs(eig_real-eig_num)./eig_real
     
 end
+
+
+% time = linspace(100,400,7);
+% rotations = [39104,88820,158341,247778,357720,487615,637088];
+% plot(time,rotations,'r')
+% xlabel('n_{step}','fontsize',16)
+% ylabel('Rotations','fontsize',16)
 
 
 

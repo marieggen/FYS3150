@@ -41,7 +41,7 @@ int main(int argc,char** argv)
 		int m = n+2;
 		double eps = 10e-8;
 		double rho_min = 0.0;
-		double rho_max = 40.0;
+		double rho_max = 50.0;
 		double h = (rho_max-rho_min)/(m);
 		double h_sq = h*h;
 		double k1 = -1.0/h_sq;
@@ -74,8 +74,11 @@ int main(int argc,char** argv)
 		finish = clock();
 		double time_spent_arma = (finish - start)/double(CLOCKS_PER_SEC);
 		cout << "When n = " << n << " the time spent with Armadillo is " << time_spent_arma << " sec." <<endl;
-		//cout << eigval << endl;	
-
+		cout << test_eigval(0,0)/2.0 << endl;
+		double rel_error = abs(0.6250-(test_eigval(0,0)/2))/0.6250;
+		//double rel_error = abs(0.1750-(test_eigval(0,0)/2.0))/0.1750;
+		cout << rel_error << endl;	
+/*
 		//Run jacobi-method and measure the time spent
 		start = clock();
 		jacobi(eps,A,S,n,m);
@@ -102,6 +105,7 @@ int main(int argc,char** argv)
 			}
 		}
 		ofile.close();
+		*/
 	}
 
 	return 0;
@@ -148,7 +152,7 @@ void jacobi(int eps, mat& A, mat& S, int n, int m)
 		}
 	}
 
-	//cout << "number of rotations: "<< iterations-1 << endl;
+	cout << "number of rotations: "<< iterations-1 << endl;
 	//cout << "max iterations: " << maxIterations << endl;
 
 	return;
@@ -183,17 +187,12 @@ void rotate(mat& A, mat& S, int k, int l, int n)
 	if ( A(k,l) != 0.0 ) {
 		
 		double tau = (A(l,l) - A(k,k))/(2*A(k,l)); 
-		//cout << "tau: " << tau << endl;
 
 		if ( tau > 0 ) {
     		t = 1.0/(tau + sqrt(1.0 + tau*tau));
-    		//t = -tau + sqrt(1.0 + tau*tau);
-    		//cout << "(tau > 0) tan: " << t << endl; 
 		} 
 		else {
 			t = -1.0/( -tau + sqrt(1.0 + tau*tau));
-			//t = -tau - sqrt(1.0 + tau*tau);
-			//cout << "(tau <= 0) tan: " << t << endl;
 
 		}
 		c = 1.0/sqrt(1+(t*t));
@@ -202,7 +201,6 @@ void rotate(mat& A, mat& S, int k, int l, int n)
 	
 	else {c = 1.0; s = 0.0;}
 
-	//cout << "cos and sin: "<< c << " , " << s << endl;
 	double a_kk, a_ll, a_ik, a_il, s_ik, s_il;
 	a_kk = A(k,k);
 	a_ll = A(l,l);
@@ -288,7 +286,7 @@ int unit_tests()
 	{
 		int a = C(0,0) != 5;
 		cout << "jacobi() did not pass." << endl;
-		cout << a << C(1,1) << endl;
+		cout << C(0,0) << C(1,1) << endl;
 		exit(0);
 	}
 
