@@ -222,33 +222,3 @@ void error_analysis(char*inFilename,char*outFilename, int n)
 
 }
 
-
-
-
-
- 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
