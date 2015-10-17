@@ -106,6 +106,20 @@ double int_sphFunction(double r1, double r2, double theta1,
     else return numerator/deno;
 }
 
+double int_MCFunction(double r1, double r2, double theta1,
+                       double theta2, double phi1, double phi2)
+{
+    //Evaluate different parts of integrand function
+    double numerator = r1*r1*r2*r2*sin(theta1)*sin(theta2);
+    double cosBeta = (cos(theta1)*cos(theta2)) +
+            (sin(theta1)*sin(theta2)*cos(phi1-phi2));
+    double root = (r1*r1)+(r2*r2)-(2*r1*r2*cosBeta);
+    double deno = sqrt(root);
+    //Test if denominator is zero
+    if(deno < pow(10.,-6.) || root < 0.0) { return 0;}
+    else return numerator/deno;
+}
+
 #define EPS 3.0e-14
 #define MAXIT 10
 void gauss_laguerre(vec& x, vec& w, int n, double alf)

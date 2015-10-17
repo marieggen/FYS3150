@@ -187,8 +187,7 @@ DIST          = /Users/Mari/Qt/5.5/clang_64/mkspecs/features/spec_pre.prf \
 		/Users/Mari/Qt/5.5/clang_64/mkspecs/features/exceptions.prf \
 		/Users/Mari/Qt/5.5/clang_64/mkspecs/features/yacc.prf \
 		/Users/Mari/Qt/5.5/clang_64/mkspecs/features/lex.prf \
-		../project_3/project_3.pro functions.h \
-		lib.h ../project_3/main.cpp \
+		../project_3/project_3.pro functions.h ../project_3/main.cpp \
 		../project_3/functions.cpp \
 		../project_3/lib.cpp
 QMAKE_TARGET  = project_3

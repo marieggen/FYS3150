@@ -17,5 +17,4 @@ INCLUDEPATH += -I/usr/local/Cellar/open-mpi/1.10.0/include
 LIBS += -L/usr/local/opt/libevent/lib -L/usr/local/Cellar/open-mpi/1.10.0/lib -lmpi_cxx -lmpi
 
 HEADERS += \
-    functions.h \
-    lib.h
+    functions.h

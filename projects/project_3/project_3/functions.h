@@ -23,3 +23,6 @@ double legendre_sum(vec& x, vec& w, const int N);
 
 double int_sphFunction(double r1, double r2,
                        double theta1, double theta2, double phi1, double phi2);
+
+double int_MCFunction(double r1, double r2, double theta1,
+                       double theta2, double phi1, double phi2);
