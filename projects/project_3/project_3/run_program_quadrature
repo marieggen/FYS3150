@@ -1,0 +1,61 @@
+legendre(5,-3.0,3.0);
+Legendre value = 0.264249
+Real value = 0.192766
+Relative error = 0.37083
+Time spent by legendre = 0.00453
+
+legendre(10,-3.0,3.0);
+Legendre value = 0.0719797
+Real value = 0.192766
+Relative error = 0.626595
+Time spent by legendre = 0.217625
+
+legendre(20,-3.0,3.0);
+Legendre value = 0.156139
+Real value = 0.192766
+Relative error = 0.190004
+Time spent by legendre = 14.0584
+
+legendre(30,-3.0,3.0);
+Legendre value = 0.177283
+Real value = 0.192766
+Relative error = 0.080319
+Time spent by legendre = 162.284
+
+laguerre(5);
+Laguerre value = 0.17345
+Real Value = 0.192766
+Relative error = 0.100205
+Time spent by laguerre = 0.003332
+
+laguerre(10);
+Laguerre value = 0.186457
+Real Value = 0.192766
+Relative error = 0.0327256
+Time spent by laguerre = 0.190904
+
+laguerre(20);
+Laguerre value = 0.191082
+Real Value = 0.192766
+Relative error = 0.00873564
+Time spent by laguerre = 12.0291
+
+laguerre(30);
+Laguerre value = 0.192114
+Real Value = 0.192766
+Relative error = 0.00338234
+Time spent by laguerre = 143.35
+
+
+
+
+
+
+
+
+
+
+
+
+
+

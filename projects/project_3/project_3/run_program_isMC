@@ -1,0 +1,49 @@
+is_MC(10e2);
+Standard deviation = 0.021258210
+MC integral = 0.17014903
+Real value = 0.19276571
+Diff = -0.022616683
+Time spent by importance sampling Monte Carlo = 0.00065900000
+
+is_MC(10e3);
+Standard deviation = 0.029888926
+MC integral = 0.22191239
+Real value = 0.19276571
+Diff = 0.029146677
+Time spent by importance sampling Monte Carlo = 0.0044280000
+
+is_MC(10e4);
+Standard deviation = 0.0055208307
+MC integral = 0.19899945
+Real value = 0.19276571
+Diff = 0.0062337352
+Time spent by importance sampling Monte Carlo = 0.055459000
+
+is_MC(10e5);
+Standard deviation = 0.0010245359
+MC integral = 0.19296049
+Real value = 0.19276571
+Diff = 0.00019477652
+Time spent by importance sampling Monte Carlo = 0.40777100
+
+is_MC(10e6);
+Standard deviation = 0.00032495340
+MC integral = 0.19297351
+Real value = 0.19276571
+Diff = 0.00020779865
+Time spent by importance sampling Monte Carlo = 4.2057850
+
+is_MC(10e7);
+Standard deviation = 0.00010396595
+MC integral = 0.19271743
+Real value = 0.19276571
+Diff = -4.8278923E-05
+Time spent by importance sampling Monte Carlo = 41.145038
+
+
+
+
+
+
+
+

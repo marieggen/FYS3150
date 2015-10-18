@@ -5,7 +5,8 @@ CONFIG -= qt
 
 SOURCES += main.cpp \
     functions.cpp \
-    lib.cpp
+    lib.cpp \
+    integration_methods.cpp
 
 INCLUDEPATH += /usr/local/include # header files
 LIBS += -L/usr/local/lib # library files
@@ -17,4 +18,5 @@ INCLUDEPATH += -I/usr/local/Cellar/open-mpi/1.10.0/include
 LIBS += -L/usr/local/opt/libevent/lib -L/usr/local/Cellar/open-mpi/1.10.0/lib -lmpi_cxx -lmpi
 
 HEADERS += \
-    functions.h
+    functions.h \
+    integration_methods.h
