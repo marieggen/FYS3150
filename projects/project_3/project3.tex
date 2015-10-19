@@ -136,9 +136,9 @@ $$I = \int_a^b f(y)dy = \int_a^b p(y)\frac{f(y)}{p(y)}dy.$$\\
 \newpage
 Since the random numbers are generated from a uniform distribution $p(x)$ with $x\in [0,1]$, we need to perform a change of variables from $x$ to $y$. This is done in the same way as discussed in the previous section. Then we finally get\\
 \vspace{5mm}
-$$I = \int_{\tilde{a}}^{\tilde{b}} \frac{f(y(x))}{p(y(x))}dx\simeq \frac{1}{N}\sum\limits_{i=1}^N \frac{f(y(x_i))}{p(y(x_i))}.$$\\
+$$I =\int_{\tilde{a}}^{\tilde{b}} \frac{dx}{dy}\frac{f(y(x))}{p(y(x))}dy = \int_{\tilde{a}}^{\tilde{b}} \frac{f(y(x))}{p(y(x))}dx\simeq \frac{1}{N}\sum\limits_{i=1}^N \frac{f(y(x_i))}{p(y(x_i))},$$\\
 \vspace{5mm} 
-In our case we can use a PDF on the form of an exponential distribution $p(y) = e^{-y}$. If we look at the expression in Eq. (\ref{eq:sph_integrand}), we see that the factors $e^{-u_1}$ and $e^{-u_2}$ corresponds to the exponential distribution. We then choose to use the PDF\\
+since $p(x)dx = dx = p(y)dy$. In our case we can use a PDF on the form of an exponential distribution $p(y) = e^{-y}$. If we look at the expression in Eq. (\ref{eq:sph_integrand}), we see that the factors $e^{-u_1}$ and $e^{-u_2}$ corresponds to the exponential distribution. We then choose to use the PDF\\
 \vspace{5mm}
 $$p(r) = Ae^{-4r},$$\\
 \vspace{5mm}
@@ -274,6 +274,15 @@ The results from this method is listed in Table \ref{tab:isMC}. Here the standar
 
 \newpage
 \section*{Conclusion}
+From this project we can conclude that when it comes to numerical integration, we should look closely on the features of the integral before we decide what kind of integration method we want to use.  If the choice of integration method is not compatible with the integral we want to evaluate, it is a big risk of inaccurate and unstable results, as we experienced in this project with the Legendre method.  
+
+
+\vspace{10mm}
+The algorithm used to solve this project and test runs can be found from the link \url{<https://github.com/marieggen/FYS3150/tree/master/projects/project_3/project_3>}.
+
+
+
+
 
 
 
