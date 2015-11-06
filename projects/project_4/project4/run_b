@@ -1,0 +1,101 @@
+T_prime = 1.0;
+
+
+#MC-cycles = 100
+num Eavg: -8
+num CVavg: 0
+num |M|avg: 4
+num Xavg: 0
+num absMavg: 4
+    
+ana E: -7.98393
+ana Cv: 0.128329
+ana M: 0
+ana X: 15.9732
+ana absM 3.99464
+
+#MC-cycles = 1000
+num Eavg: -7.984
+num CVavg: 0.127744
+num |M|avg: 3.994
+num Xavg: 0.019964
+num absMavg: 3.994
+    
+ana E: -7.98393
+ana Cv: 0.128329
+ana M: 0
+ana X: 15.9732
+ana absM 3.99464
+
+#MC-cycles = 10000
+num Eavg: -7.988
+num CVavg: 0.095856
+num |M|avg: 1.0188
+num Xavg: 14.9428
+num absMavg: 3.9964
+    
+ana E: -7.98393
+ana Cv: 0.128329
+ana M: 0
+ana X: 15.9732
+ana absM 3.99464
+
+#MC-cycles = 100000
+num Eavg: -7.98352
+num CVavg: 0.131568
+num |M|avg: 0.34676
+num Xavg: 15.8519
+num absMavg: 3.99432
+    
+ana E: -7.98393
+ana Cv: 0.128329
+ana M: 0
+ana X: 15.9732
+ana absM 3.99464
+
+#MC-cycles = 1000000
+num Eavg: -7.98366
+num CVavg: 0.130485
+num |M|avg: -0.174782
+num Xavg: 15.942
+num absMavg: 3.99444
+    
+ana E: -7.98393
+ana Cv: 0.128329
+ana M: 0
+ana X: 15.9732
+ana absM 3.99464
+
+#MC-cycles = 10000000
+num Eavg: -7.98373
+num CVavg: 0.129892
+num |M|avg: -0.114475
+num Xavg: 15.9598
+num absMavg: 3.99458
+    
+ana E: -7.98393
+ana Cv: 0.128329
+ana M: 0
+ana X: 15.9732
+ana absM 3.99464
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

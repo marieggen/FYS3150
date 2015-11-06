@@ -4,7 +4,8 @@ CONFIG -= app_bundle
 CONFIG -= qt
 
 SOURCES += main.cpp \
-    functions.cpp
+    functions.cpp\
+    lib.cpp
 
 INCLUDEPATH += /usr/local/include # header files
 LIBS += -L/usr/local/lib # library files
