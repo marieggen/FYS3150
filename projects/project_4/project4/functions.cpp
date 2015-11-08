@@ -46,7 +46,8 @@ vec anaMeanValues(double T, int N){
 }
 
 
-void Metropolis(vec w, int nSpin, mat& s, double T, double& E, double& M,long& idum){
+void Metropolis(vec w, int nSpin, mat& s, double T, double& E, double& M,
+                long& idum, int& count){
     /*Flip random spins, one at a time, and uses
      Metropolis to decide if we want to keep that
      change*/
@@ -63,8 +64,9 @@ void Metropolis(vec w, int nSpin, mat& s, double T, double& E, double& M,long& i
                  s((x+nSpin-1)%nSpin,y));//change in energy
 
         if( ran0(&idum) <= w(deltaE+8) ){
+            count += 1;
             s(x,y) *= -1; //flip spin
-            M += 2.0*s(x,y); //is this right (2)???
+            M += 2.0*s(x,y);
             E += deltaE;
         }
 
@@ -130,7 +132,8 @@ void print(vec anaValues, vec outputVales, double T){
 }
 
 
-void WriteToFileT(ofstream &analyticalFile, ofstream &numericalFile, vec anaValues, vec outputVales, double T, double MCC){
+void WriteToFileT(ofstream &analyticalFile, ofstream &numericalFile, vec anaValues,
+                  vec outputVales, double T, double MCC, int count){
     //Printed as: E, Cv, M, X, |M|, |X|, T, #MCC
 
     analyticalFile << setprecision(8) << anaValues(1) << setw(25) <<
@@ -143,7 +146,7 @@ void WriteToFileT(ofstream &analyticalFile, ofstream &numericalFile, vec anaValu
              outputVales(1) << setw(25) << outputVales(2) <<
              setw(25) << outputVales(3) << setw(25) <<
              outputVales(4) << setw(25) << outputVales(5) <<
-             setw(25) << T << setw(25) << MCC << endl;
+             setw(25) << T << setw(25) << MCC << setw(15) << count << endl;
 
     return;
 }
@@ -173,13 +176,13 @@ void SaveAllValues(int N, int cycle, double T, vec& numValues, vec& meanE, vec& 
 }
 
 void WriteToFileMCC(int MCC, ofstream &numericalFile, vec& meanE, vec& meanCv,
-                    vec& meanM, vec& meanX, vec& MC_cycles){
+                    vec& meanM, vec& meanX, vec& MC_cycles, vec count){
     //Printed as: E, Cv, M, X, |M|, |X|, #MCC
     for(int cycles=0 ; cycles<MCC ; cycles++){
         numericalFile << setprecision(8) << meanE(cycles) << setw(25) <<
                  meanCv(cycles) << setw(25) << meanM(cycles) <<
                  setw(25) << meanX(cycles) << setw(25) <<
-                 MC_cycles(cycles) << endl;
+                 MC_cycles(cycles) << setw(25) << count(cycles) << endl;
     }
 
     return;
