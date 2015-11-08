@@ -3,7 +3,7 @@
 \usepackage{graphicx}
 \usepackage{amsmath}
 \usepackage{ulem}
-\usepackage[norsk]{babel}
+\usepackage[english]{babel}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 
@@ -16,16 +16,262 @@
 
 \begin{flushleft}
 \section{Theory}
-\subsection*{The ising model in 2x2-lattice}
+\subsection{The ising model in 2x2-lattice}
+In the 2x2 Ising model  we can find the analytical expression for the systems partition function, and its mean expressions for energy, specific heat capacity, magnetization and susceptibility, in a feasible way. For bigger systems this is also possible, but it will take quite some time to finish, because the possible spin combinations in the system will grow rapidly with the size of the system.  
+\subsubsection{Energy states and partition function}
+We are looking at the Ising model in two dimensions without an external magnetic field. An energy state on its simplest form is expressed as
+\begin{equation}\label{eq:energy_2x2}
+E_i = -J\sum\limits_{<kl>}^{N}s_k s_l,
+\end{equation}
+where $s_{k,l} = \pm1$ is a given spin, $N=4$ is the total number of spins and $J$ is a coupling constant expressing the strength of the interaction between neighboring spins. We assume that $J>0$, that is, the system has a ferromagnetic ordering. The symbol $<kl>$ means that we in the sum just sums over the spins $s_{k,l}$ that are nearest neighbors. We will use periodic boundary conditions, which means that spin $s_{N+1}$ corresponds to spin number $s_1$ in a one dimensional system. Then, by use of Eq. (\ref{eq:energy_2x2}), the energy for the 2x2 Ising model is given by
+\vspace{5mm}
+$$E_i = -J\sum\limits_{<kl>}^{4}s_k s_l = -J\left(s_1s_2 + s_1s_3+s_2s_1+s_2s_4+s_3s_1+s_3s_4+s_4s_3+s_4s_2\right)$$\\
+$$-J\left(2s_1s_2 + 2s_2s_3 + 2s_3s_4 + 2s_4s_1\right),$$\\
+\vspace{5mm}
+where $s_i = 1$ corresponds to spin up and $s_i = -1$ corresponds to spin down. All the possible combinations of spin, which corresponds to all the possible energy states, are listed in Figure \ref{fig:spin_comb}. We can see that there is $16$ possible energy states, and each of those is listed in Table \ref{tab:energy_states}. Now that we know what the possible energy states are, we can find the partition function for the 2x2 spin system. In general the partition function is given by\\
+\vspace{5mm}
+\begin{equation}\label{eq:partition_def}
+Z = \sum\limits_{i=1}^{M}e^{-\beta E_i} = \sum\limits_E \Omega(E_i)e^{-\beta E_i},
+\end{equation}
+\vspace{5mm} 
+\newpage
+where $M = 16$ is the number of microstates, which corresponds to the number of possible energy states in the system. $e^{-\beta E_i}$ is a chosen probability distribution where $\beta = \frac{1}{kT}$, where $k$ is the Boltzmann constant and $T$ is the temperature of the system. The first sum in Eq. (\ref{eq:partition_def}) is the same as summing over the possible energies $-8J, 0, 8J$, and multiply by the corresponding multiplicity $\Omega(E_i)$ of the given energy. Then we have\\
+\vspace{5mm}
+$$Z = \sum\limits_E \Omega(E_i)e^{-\beta E_i} = 2e^{8J\beta} + 12e^{0}+2e^{-8J\beta}.$$\\
+\vspace{5mm}  
+If we use that $\cosh(x) = \frac{1}{2}\left(e^{-x} + e^{x}\right)$, we get
+\vspace{5mm}
+\begin{equation}\label{eq:expr_Z}
+Z = 4\cosh(8J\beta) + 12.
+\end{equation}
+
+\begin{figure}[!h]
+\begin{center}
+\includegraphics[scale=0.6]{spin_comb2.png}
+\caption{\label{fig:spin_comb}All the possible spin combinations for a 2x2 spin system.}
+\end{center}
+\end{figure}
+
+\begin{table}[!h]
+\begin{center}
+\begin{tabular}{| c | c | c || c | c | c |}
+	\hline
+	\textbf{Row} & \textbf{Column} & \textbf{Energy} & \textbf{Row} & \textbf{Column} & \textbf{Energy}\\
+	\hline	
+	$1$ & $1$ & $-8J$ & $3$ & $1$ & $0$ \\
+	$1$ & $2$ & $-8J$ & $3$ & $2$ & $0$ \\	
+	$1$ & $3$ & $0$ & $3$ & $3$ & $0$ \\
+	$1$ & $4$ & $0$ & $3$ & $4$ & $0$ \\
+	$2$ & $1$ & $0$ & $4$ & $1$ & $0$ \\
+	$2$ & $2$ & $0$ & $4$ & $2$ & $0$\\
+	$2$ & $3$ & $0$ & $4$ & $3$ & $8J$\\
+	$2$ & $4$ & $0$ & $4$ & $4$ & $8J$\\
+  \hline
+\end{tabular}
+\end{center}
+\caption{\label{tab:energy_states}The possible energy sates in the 2x2 spin system listed for the different spin combinations in Figure \ref{fig:spin_comb}.}
+\end{table}
+\newpage
+\subsubsection{Mean expressions of energy and specific heat capacity}
+It can be shown that the mean energy of a thermodynamic	system is given by
+\vspace{5mm}
+\begin{equation}\label{eq:mean_E}
+\left< E \right> = -\frac{\partial }{\partial \beta}\ln Z,
+\end{equation}\\
+\vspace{5mm}
+and that the mean value of the specific heat capacity is given by
+\vspace{5mm}
+\begin{equation}\label{eq:mean_Cv}
+\left< C_V\right> = \frac{1}{kT^2}\frac{\partial^2}{\partial\beta^2}\ln Z,
+\end{equation}\\
+\vspace{5mm}
+where $Z$ is the partition function of the system and $\beta = \frac{1}{kT}$.
+We use Eq. (\ref{eq:expr_Z}) and (\ref{eq:mean_E}) to find the mean energy of the 2x2 spin system.
+\vspace{5mm}
+$$\left< E \right> = -\frac{\partial}{\partial\beta}\ln \left[ 4\cosh(8J\beta) + 12 \right] = -\frac{1}{4\cosh(8J\beta) + 12}\frac{\partial}{\partial\beta}\left[4\cosh(8J\beta) + 12\right]$$\\
+\vspace{5mm}
+$$ = -\frac{4\cdot 8J\sinh(8J\beta)}{4\cosh(8J\beta) + 12} = -\frac{8J\sinh(8J\beta)}{\cosh(8J\beta) + 3}$$\\
+\vspace{5mm}
+Then we use Eq. (\ref{eq:mean_Cv}) to find the mean of the systems specific heat capacity.
+\vspace{5mm}
+$$\left<C_V\right> = \frac{1}{kT^2}\frac{\partial^2}{\partial\beta^2}\ln Z = \frac{1}{kT^2}\frac{\partial}{\partial\beta}\left[\frac{\partial}{\partial\beta}\ln Z\right]$$\\
+\vspace{5mm} 
+$$ = -\frac{1}{kT^2}\frac{\partial}{\partial\beta}\left< E\right> = -\frac{1}{kT^2}\frac{\partial}{\partial\beta}\left[-\frac{8J\sinh(8J\beta)}{\cosh(8J\beta) + 3}\right]$$\\
+\vspace{10mm}
+$$ = \frac{1}{kT^2} \left[\frac{64J^2\cosh(8J\beta)\left(\cosh(8J\beta) + 3\right) - 8J\sinh(8J\beta)8J\sinh(8J\beta)}{\left(\cosh(8J\beta) + 3\right)^2}\right]$$\\
+\vspace{5mm}
+\newpage
+$$ = \frac{1}{kT^2} \left[\frac{64J^2\cosh(8J\beta)}{\cosh(8J\beta) + 3} - \frac{64J^2\sinh^2(8J\beta)}{\left(\cosh(8J\beta) + 3\right)^2}\right]$$\\
+\vspace{5mm}
+$$ = \frac{64J^2}{kT^2\left(\cosh(8J\beta\right) + 3)}\left[\cosh(8J\beta) - \frac{\sinh^2(8J\beta)}{\cosh(8J\beta) + 3}\right]$$\\
+\vspace{5mm}
+\subsubsection{Mean expressions of magnetization and susceptibility}
+The magnetization of a system is simply given by 
+\vspace{5mm}
+$$M_i = \sum\limits_{i=1}^{N}s_i,$$\\
+\vspace{5mm}
+where $s_i = \pm 1$ is a given spin and $N = 4$ is the total number of spins in the system. If we again use the chosen probability distribution $e^{-\beta E_i}$, the mean magnetization of the system is given by
+\vspace{5mm}
+\begin{equation}\label{eq:mean_M}
+\left<M\right> = \frac{1}{Z}\sum\limits_{i=1}^{n}M_ie^{-\beta E_i},
+\end{equation}\\
+\vspace{5mm}
+where $n=16$ is the number of microstates in the system. Again $s_i = 1$ corresponds to spin up and $s_i = -1$ corresponds to spin down. The magnetization for each of the $16$ microstates is given in Table \ref{tab:mag_states}, and is linked to Figure \ref{fig:spin_comb}.\\
+\vspace{5mm}
+\begin{table}[!h]
+\begin{center}
+\begin{tabular}{| c | c | c || c | c | c |}
+	\hline
+	\textbf{Row} & \textbf{Column} & \textbf{Magnetization} & \textbf{Row} & \textbf{Column} & \textbf{Magnetization}\\
+	\hline	
+	$1$ & $1$ & $4$ & $3$ & $1$ & $2$ \\
+	$1$ & $2$ & $-4$ & $3$ & $2$ & $2$ \\	
+	$1$ & $3$ & $-2$ & $3$ & $3$ & $0$ \\
+	$1$ & $4$ & $-2$ & $3$ & $4$ & $0$ \\
+	$2$ & $1$ & $-2$ & $4$ & $1$ & $0$ \\
+	$2$ & $2$ & $-2$ & $4$ & $2$ & $0$\\
+	$2$ & $3$ & $2$ & $4$ & $3$ & $0$\\
+	$2$ & $4$ & $2$ & $4$ & $4$ & $0$\\
+  \hline
+\end{tabular}
+\end{center}
+\caption{\label{tab:mag_states}The possible magnetization values in the 2x2 spin system listed for the different spin combinations in Figure \ref{fig:spin_comb}.}
+\end{table}
+\newpage
+By use of Eq. (\ref{eq:mean_M}) and (\ref{eq:expr_Z}), Table \ref{tab:energy_states} and Table \ref{tab:mag_states}, we can find the mean magnetization of the 2x2 spin system.
+\vspace{5mm}
+$$\left<M\right> = \frac{1}{Z}\left[-4e^{8J\beta} - 8e^{0} + 8e^{0} + 4e^{8J\beta}\right] = 0$$\\
+\vspace{5mm}
+It is also interesting to look at the absolute value of the magnetization in the system. The mean value of the magnetization in the 2x2 spin system is given by
+\vspace{5mm}
+$$\left<|M|\right> = \frac{1}{Z}\left[4e^{8J\beta} + 8e^{0} + 8e^{0} + 4e^{8J\beta}\right] = \frac{16 + 8e^{8J\beta}}{4\cosh(8J\beta) + 12} = \frac{4 + 2e^{8J\beta}}{\cosh(8J\beta) + 3}$$\\
+\vspace{5mm}
+The susceptibility of a thermodynamic system is given by
+\vspace{5mm}
+\begin{equation}\label{eq:mean_X}
+\left<X\right> = \frac{1}{kT}\left(\left<M^2\right> - \left< M \right>^2\right).
+\end{equation}\\
+To find $\left<X\right>$ we have to find an expression for $\left<M^2\right>$ first. We can use Eq. (\ref{eq:mean_M}) to find $\left<M^2\right>$, if we replace $M$ with $M^2$. 
+\vspace{5mm}
+$$\left<M^2\right> = \frac{1}{Z}\left[16e^{8J\beta} + 16e^{0} + 16e^{0} + 16e^{8J\beta}\right] = \frac{32}{Z}\left(e^{8J\beta} + 1\right)$$\\
+\vspace{5mm}
+$$ = \frac{32\left(e^{8J\beta} + 1\right)}{4\cosh(8J\beta) + 12} = \frac{8\left(e^{8J\beta} + 1\right)}{\cosh(8J\beta) + 3}$$\\
+\vspace{5mm}
+Now we can find the mean value of the susceptibility for the 2x2 spin system by use of Eq. (\ref{eq:mean_X}).
+\vspace{5mm}
+$$\left<X\right> = \frac{1}{kT}\left(\frac{8\left(e^{8J\beta} + 1\right)}{\cosh(8J\beta) + 3} - 0^2\right) = \frac{8\left(e^{8J\beta} + 1\right)}{kT\left(\cosh(8J\beta) + 3\right)},$$\\
+\vspace{5mm}
+or, if we use the mean of the absolute value of the magnetization, we get
+\vspace{5mm}
+$$\left<|X|\right> = \frac{1}{kT}\left(\frac{8\left(e^{8J\beta} + 1\right)}{\cosh(8J\beta) + 3} - \left(\frac{4 + 2e^{8J\beta}}{\cosh(8J\beta) + 3}\right)^2\right).$$\\
+\newpage
+\subsection{The Metropolis algorithm}
 
 
 
+
+
+
+
+
+
+
+
+
+
+\newpage
 \section{Method}
+\subsection{Dimensionless variables}
 
-
+\newpage
 \section{Results and discussion}
 
+\subsection{Comparison of data for low temperature}
+\begin{table}[!h]
+\begin{center}
+\begin{tabular}{| c | c |}
+	\hline
+	 & \textbf{Analytical data} \\
+	\hline	
+	 $\left<E/J\right>$ & $-1.99598$\\
+	 $\left<C_V/k\right>$ & $0.0320823$\\
+	 $\left<|M|\right>$ & $0.998661$ \\
+	 $\left<|X|J\right>$ & $0.00401074$\\
 
+  \hline
+\end{tabular}
+\end{center}
+\caption{\label{tab:analytic_low_T}Analytically calculated data for dimensionless energy, specific heat capacity, absolute magnetization and absolute susceptibility respectively. Low temperature corresponds to $\frac{kT}{J} = 1$.}
+\end{table}
+
+
+\begin{table}[!h]
+\begin{center}
+\begin{tabular}{| c | c | c || c | c | c |}
+	\hline
+   \multicolumn{3}{|c||}{	\textbf{\# MC cycles = $\bf 10^{2}$}} & \multicolumn{3}{|c|}{	\textbf{\# MC cycles = $\bf 10^{5}$}} \\
+	\hline
+	 & \textbf{Data} & \textbf{Relative error} & & \textbf{Data} & \textbf{Relative error}\\
+	\hline	
+	 $E/J$ & $-2$ & $0.0020$ & $E/J$ & $-1.996$ & $8.9680e-06$\\
+	 $C_V/k$ & $0$ & $-1$ & 	 $C_V/k$ & $0.031936$ & $-0.0046$\\
+	 $|M|$ & $1$ & $0.0013$ & 	 $|M|$ & $0.99873$ & $6.9363e-05$\\
+	 $|X|J$ & $0$ & $-1$ & 	 $|X|J$ & $0.00361355$ & $-0.0990$\\
+
+  \hline
+  
+  \hline
+   \multicolumn{3}{|c||}{	\textbf{\# MC cycles = $\bf 10^{3}$}} & \multicolumn{3}{|c|}{	\textbf{\# MC cycles = $\bf 10^{6}$}} \\
+	\hline	
+	 $E/J$ & $-1.998$ & $0.0010$ & $E/J$ & $-1.99566$ & $-1.5937e-04$\\
+	 $C_V/k$ & $0.015984$ & $-0.50$ & 	 $C_V/k$ & $0.0346128$ & $0.0789$\\
+	 $|M|$ & $0.999$ & $0.00034$ & 	 $|M|$ & $0.998557$ & $-1.0337e-04$\\
+	 $|X|J$ & $0.003996$ & $-0.0037$ & 	 $|X|J$ & $0.00431068$ & $0.0748$\\
+
+  \hline
+  
+  \hline
+   \multicolumn{3}{|c||}{	\textbf{\# MC cycles = $\bf 10^{4}$}} & \multicolumn{3}{|c|}{	\textbf{\# MC cycles = $\bf 10^{7}$}} \\
+	\hline	
+	 $E/J$ & $-1.993$ & $-0.0015$ & $E/J$ & $-1.99596$ & $-9.5692e-06$\\
+	 $C_V/k$ & $0.055804$ & $0.7394$ & 	 $C_V/k$ & $0.032234$ & $0.0047$\\
+	 $|M|$ & $0.99765$ & $-0.0010$ & 	 $|M|$ & $0.998653$ & $-7.7904e-06$\\
+	 $|X|J$ & $0.00707791$ & $0.7647$ & 	 $|X|J$ & $0.00403824$ & $0.0069$\\
+
+  \hline
+\end{tabular}
+\end{center}
+\caption{\label{tab:numeric_low_T}Numerically calculated data for dimensionless energy, specific heat capacity, absolute magnetization and absolute susceptibility respectively. Low temperature corresponds to $\frac{kT}{J} = 1$. The data is calculated for different number of Monte Carlo cycles (MC cycles), and the relative error for all data are listed.}
+\end{table}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\newpage
 \section{Conclusion}
 
 
