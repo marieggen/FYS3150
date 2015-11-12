@@ -14,7 +14,16 @@
 
 \newpage
 
+\tableofcontents
+
 \begin{flushleft}
+\newpage
+\begin{abstract}
+hei
+\end{abstract}
+hei
+\section{Introduction}
+\newpage
 \section{Theory}
 \subsection{The ising model in 2x2-lattice}
 In the 2x2 Ising model  we can find the analytical expression for the systems partition function, and its mean expressions for energy, specific heat capacity, magnetization and susceptibility, in a feasible way. For bigger systems this is also possible, but it will take quite some time to finish, because the possible spin combinations in the system will grow rapidly with the size of the system.  
@@ -35,7 +44,7 @@ Z = \sum\limits_{i=1}^{M}e^{-\beta E_i} = \sum\limits_E \Omega(E_i)e^{-\beta E_i
 \end{equation}
 \vspace{5mm} 
 \newpage
-where $M = 16$ is the number of microstates, which corresponds to the number of possible energy states in the system. $e^{-\beta E_i}$ is a chosen probability distribution where $\beta = \frac{1}{kT}$, where $k$ is the Boltzmann constant and $T$ is the temperature of the system. The first sum in Eq. (\ref{eq:partition_def}) is the same as summing over the possible energies $-8J, 0, 8J$, and multiply by the corresponding multiplicity $\Omega(E_i)$ of the given energy. Then we have\\
+where $M = 16$ is the number of microstates, which corresponds to the number of possible energy states in the system. $e^{-\beta E_i}$ is a given probability distribution where $\beta = \frac{1}{kT}$, where $k$ is the Boltzmann constant and $T$ is the temperature of the system. The first sum in Eq. (\ref{eq:partition_def}) is the same as summing over the possible energies $-8J, 0, 8J$, and multiply by the corresponding multiplicity $\Omega(E_i)$ of the given energy. Then we have\\
 \vspace{5mm}
 $$Z = \sum\limits_E \Omega(E_i)e^{-\beta E_i} = 2e^{8J\beta} + 12e^{0}+2e^{-8J\beta}.$$\\
 \vspace{5mm}  
@@ -110,7 +119,7 @@ The magnetization of a system is simply given by
 \vspace{5mm}
 $$M_i = \sum\limits_{i=1}^{N}s_i,$$\\
 \vspace{5mm}
-where $s_i = \pm 1$ is a given spin and $N = 4$ is the total number of spins in the system. If we again use the chosen probability distribution $e^{-\beta E_i}$, the mean magnetization of the system is given by
+where $s_i = \pm 1$ is a given spin and $N = 4$ is the total number of spins in the system. If we again use the given probability distribution $e^{-\beta E_i}$, the mean magnetization of the system is given by
 \vspace{5mm}
 \begin{equation}\label{eq:mean_M}
 \left<M\right> = \frac{1}{Z}\sum\limits_{i=1}^{n}M_ie^{-\beta E_i},
@@ -165,9 +174,27 @@ or, if we use the mean of the absolute value of the magnetization, we get
 \vspace{5mm}
 $$\left<|X|\right> = \frac{1}{kT}\left(\frac{8\left(e^{8J\beta} + 1\right)}{\cosh(8J\beta) + 3} - \left(\frac{4 + 2e^{8J\beta}}{\cosh(8J\beta) + 3}\right)^2\right).$$\\
 \newpage
-\subsection{The Metropolis algorithm}
+\subsection{The Monte Carlo process}
+To pick the most appropriate selection of random states in the Monte Carlo simulation of a evolving system according to the given probability distribution $e^{-\beta E_i}$, Markov Chains and the Metropolis algorithm with detailed balance can be used.
+\subsubsection{Markov Chains}
+A Markov process generates random states by use of random walks that depends on a chosen probability distribution. A move from one random state to another is independent of the previous history of the system. This leads to that we reaches the most probable state of a system, if we choose a random state, and performs a Markov process for a long enough time.
+In our case the probability distribution is $w_i(t) = e^{-\beta E_i}$. The time development of our probability distribution, where $t=1$ in this case is one Monte Carlo cycle, is given by
+\vspace{5mm}
+$$w_i(t=1) = W(j\rightarrow i)w_j(t=0) = W_{ji}w_j(t=0),$$\\
+\vspace{5mm} 
+where $W_{ji}$ is called the transition probability, and is represented by a matrix. Thus, in general vector-matrix representation we have that
+\vspace{5mm}
+$$\boldsymbol{\hat{w}}(t+1) = \boldsymbol{\hat{W}}\boldsymbol{\hat{w}}(t).$$\\
+\vspace{5mm}
+
+The system is said to be in the most probable state when $||\boldsymbol{\hat{w}}(t+1) -\boldsymbol{\hat{w}}(t)||\rightarrow 0$. In this case, and in most other cases, the transition matrix is not known because of complicated behavior of the system. Then we have to use the Metropolis algorithm to get anywhere at all. 
 
 
+\subsubsection{The Metropolis Algorithm and Detailed Balance}
+
+In thermodynamics, this means that after a certain number of Markov processes we reach an equilibrium distribution. This mimicks the way a real system reaches its most likely state at a given temperature of the surroundings.
+
+To reach this distribution, the Markov process needs to obey two important conditions, that of ergodicity and detailed balance. These conditions impose constraints on our algorithms for accepting or rejecting new random states. The Metropolis algorithm discussed here abides to both these constraints and is discussed in more detail in Section 12.5. The Metropolis algorithm is widely used in Monte Carlo simulations of physical systems and the understand- ing of it rests within the interpretation of random walks and Markov processes. However, before we do that we discuss the intimate link between random walks, Markov processes and the diffusion equation. In section 12.3 we show that a Markov process is nothing but the discretized version of the diffusion equation. Diffusion and random walks are discussed from a more experimental point of view in the next section. There we show also a simple algorithm for random walks and discuss eventual physical implications. We end this chapter with a discussion of one of the most used algorithms for generating new steps, namely the Metropolis algorithm. This algorithm, which is based on Markovian random walks satisfies both the ergodicity and detailed balance requirements and is widely in applications of Monte Carlo simulations in the natural sciences. The Metropolis algorithm is used in our studies of phase transitions in statistical physics and the simulations of quantum mechanical systems.
 
 
 
@@ -182,6 +209,23 @@ $$\left<|X|\right> = \frac{1}{kT}\left(\frac{8\left(e^{8J\beta} + 1\right)}{\cos
 \newpage
 \section{Method}
 \subsection{Dimensionless variables}
+
+\subsection{Evolution of the system}
+In order to reach the equilibrium state of the system in an efficient way, we choose to flip one spin at a time in the evolution of the system. We choose to do it this way because we then only have five possible changes in the energy per flip, namely $\Delta E = -8J, -4J, 0, 4J, 8J$. This comes from the fact that $\Delta E = E_2 - E_1$, and we can show it by use of Eq. (\ref{eq:energy_2x2}).
+\vspace{5mm}
+$$\Delta E = E_2 - E_1 = J\sum\limits_{<kl>}^{N}s_k^1 s_l^1 -J\sum\limits_{<kl>}^{N}s_k^2 s_l^2$$\\
+\vspace{5mm}
+$$ = -J\sum\limits_{<kl>}^{N} s_k^2(s_l^2 -  s_l^1),$$\\
+\vspace{5mm}
+where we have used that $s_l^1 = 1$ if $s_l^2 = -1$, and vice versa. The nearest neighbors $s_k^1 = s_k^2$ keeps their values because we only flips one spin at a time. Thus, if $s_l^1 = 1$ we have $s_l^1 - s_l^2 = 2$, and if $s_l^1 = -1$ we have $s_l^1 - s_l^2 = -2$, which gives us the relation
+\vspace{5mm}
+$$\Delta E = 2Js_l^1\sum\limits_{<kl>}^{N} s_k.$$\\
+\vspace{5mm} 
+From this relation we see that we only have the five possible values of change in energy per flip, which means that we can precalculate the possible values of the probability $e^{-\beta\Delta E_i}$. This relation also makes it easy to update the energy during the evolution of the simulated system. We can do a similar deriving for the new magnetization values of the simulated system, then vi get that
+\vspace{5mm}
+$$M_2 = M_1 + 2s_l^2.$$\\ 
+\vspace{5mm}
+
 
 \newpage
 \section{Results and discussion}

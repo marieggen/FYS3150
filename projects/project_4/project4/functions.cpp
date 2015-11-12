@@ -115,7 +115,7 @@ vec outputValues(double T, int N, int MCc, vec& numValues,
 
     Evariance(numMCC) = outputValues(1)*(T*T);
     Mvariance(numMCC) = outputValues(3)*T;
-    EvarianceValues(numMCC) = Evariance(numMCC);
+    EvarianceValues(numMCC) = Evariance(numMCC)/perSpin;
 
 
     if(numMCC%100 == 0){

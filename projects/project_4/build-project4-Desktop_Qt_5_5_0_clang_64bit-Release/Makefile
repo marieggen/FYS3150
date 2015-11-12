@@ -13,8 +13,8 @@ MAKEFILE      = Makefile
 CC            = /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang
 CXX           = /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++
 DEFINES       = 
-CFLAGS        = -pipe -O2 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk -mmacosx-version-min=10.7 -Wall -W -fPIC $(DEFINES)
-CXXFLAGS      = -pipe -O2 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk -std=c++11 -stdlib=libc++ -mmacosx-version-min=10.7 -Wall -W -fPIC $(DEFINES)
+CFLAGS        = -pipe -I/usr/local/Cellar/open-mpi/1.10.0/include -O2 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk -mmacosx-version-min=10.7 -Wall -W -fPIC $(DEFINES)
+CXXFLAGS      = -pipe -I/usr/local/Cellar/open-mpi/1.10.0/include -DMPICH_IGNORE_CXX_SEEK -O2 -I/usr/local/Cellar/open-mpi/1.10.0/include -DMPICH_IGNORE_CXX_SEEK -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk -std=c++11 -stdlib=libc++ -mmacosx-version-min=10.7 -Wall -W -fPIC $(DEFINES)
 INCPATH       = -I../project4 -I. -I/usr/local/include -I/Users/Mari/Qt/5.5/clang_64/mkspecs/macx-clang
 QMAKE         = /Users/Mari/Qt/5.5/clang_64/bin/qmake
 DEL_FILE      = rm -f
@@ -35,7 +35,7 @@ COMPRESS      = gzip -9f
 DISTNAME      = project41.0.0
 DISTDIR = /Users/Mari/Documents/UiO/FYS3150/FYS3150_git/projects/project_4/build-project4-Desktop_Qt_5_5_0_clang_64bit-Release/.tmp/project41.0.0
 LINK          = /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++
-LFLAGS        = -headerpad_max_install_names -Wl,-syslibroot,/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk -stdlib=libc++ -mmacosx-version-min=10.7
+LFLAGS        = -headerpad_max_install_names -L/usr/local/opt/libevent/lib -L/usr/local/Cellar/open-mpi/1.10.0/lib -lmpi_cxx -lmpi -Wl,-syslibroot,/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk -stdlib=libc++ -mmacosx-version-min=10.7
 LIBS          = $(SUBLIBS) -L/usr/local/lib -larmadillo -llapack -lblas 
 AR            = /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ar cq
 RANLIB        = /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ranlib -s
@@ -169,6 +169,7 @@ DIST          = /Users/Mari/Qt/5.5/clang_64/mkspecs/features/spec_pre.prf \
 		/Users/Mari/Qt/5.5/clang_64/mkspecs/features/qt_config.prf \
 		/Users/Mari/Qt/5.5/clang_64/mkspecs/macx-clang/qmake.conf \
 		/Users/Mari/Qt/5.5/clang_64/mkspecs/features/spec_post.prf \
+		../project4/.qmake.stash \
 		/Users/Mari/Qt/5.5/clang_64/mkspecs/features/exclusive_builds.prf \
 		/Users/Mari/Qt/5.5/clang_64/mkspecs/features/default_pre.prf \
 		/Users/Mari/Qt/5.5/clang_64/mkspecs/features/mac/default_pre.prf \
@@ -345,6 +346,7 @@ Makefile: ../project4/project4.pro /Users/Mari/Qt/5.5/clang_64/mkspecs/macx-clan
 		/Users/Mari/Qt/5.5/clang_64/mkspecs/features/qt_config.prf \
 		/Users/Mari/Qt/5.5/clang_64/mkspecs/macx-clang/qmake.conf \
 		/Users/Mari/Qt/5.5/clang_64/mkspecs/features/spec_post.prf \
+		.qmake.stash \
 		/Users/Mari/Qt/5.5/clang_64/mkspecs/features/exclusive_builds.prf \
 		/Users/Mari/Qt/5.5/clang_64/mkspecs/features/default_pre.prf \
 		/Users/Mari/Qt/5.5/clang_64/mkspecs/features/mac/default_pre.prf \
@@ -479,6 +481,7 @@ Makefile: ../project4/project4.pro /Users/Mari/Qt/5.5/clang_64/mkspecs/macx-clan
 /Users/Mari/Qt/5.5/clang_64/mkspecs/features/qt_config.prf:
 /Users/Mari/Qt/5.5/clang_64/mkspecs/macx-clang/qmake.conf:
 /Users/Mari/Qt/5.5/clang_64/mkspecs/features/spec_post.prf:
+.qmake.stash:
 /Users/Mari/Qt/5.5/clang_64/mkspecs/features/exclusive_builds.prf:
 /Users/Mari/Qt/5.5/clang_64/mkspecs/features/default_pre.prf:
 /Users/Mari/Qt/5.5/clang_64/mkspecs/features/mac/default_pre.prf:
@@ -975,7 +978,40 @@ main.o: ../project4/main.cpp /usr/local/include/armadillo \
 		/usr/local/include/armadillo_bits/spglue_times_meat.hpp \
 		/usr/local/include/armadillo_bits/spglue_join_meat.hpp \
 		/usr/local/include/armadillo_bits/compiler_setup_post.hpp \
-		../project4/functions.h
+		../project4/functions.h \
+		/usr/local/include/mpi.h \
+		/usr/local/include/mpi_portable_platform.h \
+		/usr/local/include/openmpi/ompi/mpi/cxx/mpicxx.h \
+		/usr/local/include/openmpi/ompi/mpi/cxx/constants.h \
+		/usr/local/include/openmpi/ompi/mpi/cxx/functions.h \
+		/usr/local/include/openmpi/ompi/mpi/cxx/datatype.h \
+		/usr/local/include/openmpi/ompi/mpi/cxx/exception.h \
+		/usr/local/include/openmpi/ompi/mpi/cxx/op.h \
+		/usr/local/include/openmpi/ompi/mpi/cxx/status.h \
+		/usr/local/include/openmpi/ompi/mpi/cxx/request.h \
+		/usr/local/include/openmpi/ompi/mpi/cxx/group.h \
+		/usr/local/include/openmpi/ompi/mpi/cxx/comm.h \
+		/usr/local/include/openmpi/ompi/mpi/cxx/win.h \
+		/usr/local/include/openmpi/ompi/mpi/cxx/file.h \
+		/usr/local/include/openmpi/ompi/mpi/cxx/errhandler.h \
+		/usr/local/include/openmpi/ompi/mpi/cxx/intracomm.h \
+		/usr/local/include/openmpi/ompi/mpi/cxx/topology.h \
+		/usr/local/include/openmpi/ompi/mpi/cxx/intercomm.h \
+		/usr/local/include/openmpi/ompi/mpi/cxx/info.h \
+		/usr/local/include/openmpi/ompi/mpi/cxx/datatype_inln.h \
+		/usr/local/include/openmpi/ompi/mpi/cxx/functions_inln.h \
+		/usr/local/include/openmpi/ompi/mpi/cxx/request_inln.h \
+		/usr/local/include/openmpi/ompi/mpi/cxx/comm_inln.h \
+		/usr/local/include/openmpi/ompi/mpi/cxx/intracomm_inln.h \
+		/usr/local/include/openmpi/ompi/mpi/cxx/topology_inln.h \
+		/usr/local/include/openmpi/ompi/mpi/cxx/intercomm_inln.h \
+		/usr/local/include/openmpi/ompi/mpi/cxx/group_inln.h \
+		/usr/local/include/openmpi/ompi/mpi/cxx/op_inln.h \
+		/usr/local/include/openmpi/ompi/mpi/cxx/errhandler_inln.h \
+		/usr/local/include/openmpi/ompi/mpi/cxx/status_inln.h \
+		/usr/local/include/openmpi/ompi/mpi/cxx/info_inln.h \
+		/usr/local/include/openmpi/ompi/mpi/cxx/win_inln.h \
+		/usr/local/include/openmpi/ompi/mpi/cxx/file_inln.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../project4/main.cpp
 
 functions.o: ../project4/functions.cpp /usr/local/include/armadillo \
