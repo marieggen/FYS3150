@@ -31,6 +31,9 @@ void initializeSpin(double T, int N, mat& s, long& idum,
 void SaveValues(int N, int cycle, vec numValues, vec& meanE, vec& Evalues,
                 vec& MC_cycles, double E);
 
+void ising(int N, int Tsteps, int MCCmax, int MCClimit,int my_rank,
+          int numprocs, vec& numValues);
+
 //void SaveAllValues(int N, int cycle, double T, vec& numValues, vec& meanE, vec& meanCv,
 //vec& meanM, vec& meanX, vec& MC_cycles, double E, double M);
 

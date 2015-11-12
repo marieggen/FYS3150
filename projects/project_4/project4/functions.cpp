@@ -5,6 +5,7 @@
 #include "lib.cpp"
 #include <fstream>
 #include <iomanip>
+#include <string>
 
 using namespace std;
 using namespace arma;
@@ -113,20 +114,20 @@ vec outputValues(double T, int N, int MCc, vec& numValues,
     outputValues(5) = ((M2avg - absMavg*absMavg)/T)*perSpin;//absXavg
 
 
-    Evariance(numMCC) = outputValues(1)*(T*T);
-    Mvariance(numMCC) = outputValues(3)*T;
-    EvarianceValues(numMCC) = Evariance(numMCC)/perSpin;
+//    Evariance(numMCC) = outputValues(1)*(T*T);
+//    Mvariance(numMCC) = outputValues(3)*T;
+//    EvarianceValues(numMCC) = Evariance(numMCC)/perSpin;
 
 
-    if(numMCC%100 == 0){
+//    if(numMCC%100 == 0){
 
-        VarE(num) = sum(Evariance);
-        VarM(num) = sum(Mvariance);
-        num += 1;
+//        VarE(num) = sum(Evariance);
+//        VarM(num) = sum(Mvariance);
+//        num += 1;
 
-        Evariance.fill(0);
-        Mvariance.fill(0);
-    }
+//        Evariance.fill(0);
+//        Mvariance.fill(0);
+//    }
 
     return outputValues;
 }
@@ -157,26 +158,26 @@ void print(vec anaValues, vec outputVales, double T){
 
 void WriteToFileT(ofstream &analyticalFile, ofstream &numericalFile, vec anaValues,
                   vec outputVales, double T, double MCC, int count){
-    //Printed as: E, Cv, M, X, |M|, |X|, T, #MCC
+    //Printed as: E, Cv, M, X, |M|, |X|, T, #MCC, count
 
     analyticalFile << setprecision(8) << anaValues(1) << setw(25) <<
-             anaValues(2) << setw(25) << anaValues(3) <<
-             setw(25) << anaValues(4) << setw(25) <<
-             anaValues(5) << setw(25) << anaValues(6) <<
-             setw(25) << T << setw(25) << MCC << endl;
+                      anaValues(2) << setw(25) << anaValues(3) <<
+                      setw(25) << anaValues(4) << setw(25) <<
+                      anaValues(5) << setw(25) << anaValues(6) <<
+                      setw(25) << T << setw(25) << MCC << endl;
 
     numericalFile << setprecision(8) << outputVales(0) << setw(25) <<
-             outputVales(1) << setw(25) << outputVales(2) <<
-             setw(25) << outputVales(3) << setw(25) <<
-             outputVales(4) << setw(25) << outputVales(5) <<
-             setw(25) << T << setw(25) << MCC << setw(15) << count << endl;
+                     outputVales(1) << setw(25) << outputVales(2) <<
+                     setw(25) << outputVales(3) << setw(25) <<
+                     outputVales(4) << setw(25) << outputVales(5) <<
+                     setw(25) << T << setw(25) << MCC << setw(15) << count << endl;
 
     return;
 }
 
 
 void initializeSpin(double T, int N, mat& s, long& idum,
-                   double& E, double& M){
+                    double& E, double& M){
     if( T <= 1.5){
         s.fill(1); //spin matrix
         E = -2.0*N*N; //init value for low T
@@ -209,10 +210,108 @@ void initializeSpin(double T, int N, mat& s, long& idum,
 
             }
         }
-   }
+    }
 
     return;
 }
+
+void ising(int N, int Tsteps, int MCCmax, int MCClimit,int my_rank,
+          int numprocs, vec& numValues){
+
+    long idum = -1*my_rank;
+    //int N=20; //num. of spins in each dim.
+    mat s(N,N);
+    vec w(17); w.fill(0);
+
+    double Tstart = 2.0;
+    double Tfinish = 2.4;
+    double Tstep = (Tfinish - Tstart)/(double) Tsteps;
+
+
+    int NoOfTempPerCPU = Tsteps/numprocs;
+    int Tbegin = my_rank*NoOfTempPerCPU;
+    int Tend = (my_rank + 1)*NoOfTempPerCPU;
+    if(my_rank == numprocs-1) Tend = Tsteps;
+    vec Tvec = linspace<vec>(Tstart, Tfinish, Tsteps);
+    int T_count = 0;
+
+    double MCCstart = 0.0;
+    double MCCfinish = 5000;
+    int MCCsteps = 1;
+    double MCCstep = (MCCfinish - MCCstart)/(double) MCCsteps;
+    double MCC = MCCmax+MCClimit;
+    int numMCC = 0;
+    int num = 0;
+
+    vec Evariance(MCCsteps); Evariance.fill(0);
+    vec Mvariance(MCCsteps); Mvariance.fill(0);
+    vec EvarianceValues(MCCsteps);
+    vec VarE(10);
+    vec VarM(10);
+    int length = 2*N*N+2*N*N;
+    vec P_E(length);
+
+    char analyticalName[10000];
+    char numericalName[10000];
+    sprintf(analyticalName, "../project4/ana_test_%d.txt", my_rank);
+    sprintf(numericalName, "../project4/num_test_%d.txt", my_rank);
+    string str1(analyticalName);
+    string str2(numericalName);
+    ofstream analyticalFile(str1);
+    ofstream numericalFile(str2);
+
+
+
+
+//    ofstream analyticalFile("../project4/ana_test.txt");
+//    ofstream numericalFile("../project4/num_test.txt");
+
+    //for(int i=0 ; i<Tsteps ; i++){
+    for(int i=Tbegin ; i<Tend ; i++){
+        double T =Tvec(i);
+        double E = 0.0;
+        double M = 0.0;
+        initializeSpin(T, N, s, idum, E, M);
+        vec anaValues = anaMeanValues(T, N);
+        for(int k=-8 ; k<=8 ; k+=4){w(k+8) = exp(-k/T);}
+
+        for(int cycles=0 ; cycles<MCCsteps ; cycles++){
+
+            int count = 0;
+            vec numValues(5);
+            numValues.fill(0);
+
+            for(int cycle=0 ; cycle<MCC ; cycle++){
+                Metropolis(w, N, s, T, E, M, idum, count);
+                if(cycle >= MCClimit){
+                    numMeanValues(N, E, M, numValues,P_E);
+                }
+            }
+
+            vec outputVales = outputValues(T,N,MCCmax,numValues,
+                                           Evariance, Mvariance,numMCC,
+                                           VarE, VarM, num, EvarianceValues);
+            //print(anaValues, outputVales,T);
+            WriteToFileT(analyticalFile,numericalFile,anaValues,outputVales,
+                       T, MCC, count);
+
+//            MCC += MCCstep;
+//            numMCC += 1;
+        }
+
+        // Write everything to file
+
+        T_count += 1;
+    }
+
+    analyticalFile.close();
+    numericalFile.close();
+
+    return;
+}
+
+
+
 /*
 void SaveValues(int N, int cycle, vec numValues, vec& meanE, vec& Evalues,
                 vec& MC_cycles, double E){
