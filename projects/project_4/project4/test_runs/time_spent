@@ -1,0 +1,19 @@
+Time spent when N = 20, Tsteps = 16, and #MCC = 1005000is t = 86.113
+Time spent when N = 20, Tsteps = 16, and #MCC = 1005000is t = 87.1808
+Time spent when N = 20, Tsteps = 16, and #MCC = 1005000is t = 88.6424
+Time spent when N = 20, Tsteps = 16, and #MCC = 1005000is t = 90.5564
+
+Time spent when N = 40, Tsteps = 16, and #MCC = 1005000 is t = 343.48 sec.
+Time spent when N = 40, Tsteps = 16, and #MCC = 1005000 is t = 347.584 sec.
+Time spent when N = 40, Tsteps = 16, and #MCC = 1005000 is t = 353.484 sec.
+Time spent when N = 40, Tsteps = 16, and #MCC = 1005000 is t = 362.201 sec.
+
+Time spent when N = 60, Tsteps = 16, and #MCC = 1005000 is t = 782.428 sec.
+Time spent when N = 60, Tsteps = 16, and #MCC = 1005000 is t = 792.094 sec.
+Time spent when N = 60, Tsteps = 16, and #MCC = 1005000 is t = 806.501 sec.
+Time spent when N = 60, Tsteps = 16, and #MCC = 1005000 is t = 825.308 sec.
+
+Time spent when N = 80, Tsteps = 16, and #MCC = 1005000 is t = 1392.11 sec.
+Time spent when N = 80, Tsteps = 16, and #MCC = 1005000 is t = 1409.33 sec.
+Time spent when N = 80, Tsteps = 16, and #MCC = 1005000 is t = 1435.56 sec.
+Time spent when N = 80, Tsteps = 16, and #MCC = 1005000 is t = 1470.28 sec.

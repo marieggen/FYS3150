@@ -9,6 +9,7 @@
 
 using namespace std;
 using namespace arma;
+clock_t start, finish;
 
 int main(int argc, char* argv[])
 {
@@ -18,8 +19,22 @@ int main(int argc, char* argv[])
     MPI_Comm_size (MPI_COMM_WORLD, &numprocs);
     MPI_Comm_rank (MPI_COMM_WORLD, &my_rank);
 
+    int N = 100;
+    int Tsteps = 16;
+    int MCCmax = 1e7;
+    int MCClimit = 5000;
+
+
     vec numValues(5);
-    ising(20,16, 1e5, 5000,my_rank, numprocs, numValues);
+    start = clock();
+    ising(N,Tsteps, MCCmax, MCClimit, my_rank, numprocs, numValues);
+    finish = clock();
+    double time_spent = (finish - start)/double(CLOCKS_PER_SEC);
+
+    cout << "Time spent when N = " << N << ", Tsteps = " <<
+            Tsteps << ", and #MCC = " << MCCmax+MCClimit <<
+            " is t = " << time_spent << " sec." << endl;
+
 
 
 

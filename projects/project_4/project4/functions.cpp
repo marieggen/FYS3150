@@ -253,20 +253,13 @@ void ising(int N, int Tsteps, int MCCmax, int MCClimit,int my_rank,
 
     char analyticalName[10000];
     char numericalName[10000];
-    sprintf(analyticalName, "../project4/ana_test_%d.txt", my_rank);
-    sprintf(numericalName, "../project4/num_test_%d.txt", my_rank);
+    sprintf(analyticalName, "../project4/tmillana_%d_%d.txt", N, my_rank);
+    sprintf(numericalName, "../project4/tmillnum_%d_%d.txt", N, my_rank);
     string str1(analyticalName);
     string str2(numericalName);
     ofstream analyticalFile(str1);
     ofstream numericalFile(str2);
 
-
-
-
-//    ofstream analyticalFile("../project4/ana_test.txt");
-//    ofstream numericalFile("../project4/num_test.txt");
-
-    //for(int i=0 ; i<Tsteps ; i++){
     for(int i=Tbegin ; i<Tend ; i++){
         double T =Tvec(i);
         double E = 0.0;
@@ -299,8 +292,6 @@ void ising(int N, int Tsteps, int MCCmax, int MCClimit,int my_rank,
 //            numMCC += 1;
         }
 
-        // Write everything to file
-
         T_count += 1;
     }
 
@@ -310,77 +301,6 @@ void ising(int N, int Tsteps, int MCCmax, int MCClimit,int my_rank,
     return;
 }
 
-
-
-/*
-void SaveValues(int N, int cycle, vec numValues, vec& meanE, vec& Evalues,
-                vec& MC_cycles, double E){
-    //Saves the mean values from every monte
-    //MC cycle into a matrix
-
-    double norm = 1.0/((double) cycle); //divide by tot. num. of cycles
-    double perSpin = 1.0/((double) N*(double) N);
-    double Eavg = numValues(0)*norm;
-    double E2avg = numValues(2)*norm;
-
-    meanE(cycle) = Eavg*perSpin;//Eavg
-    meanEvariance(cycle) = ((E2avg - Eavg*Eavg)/(T*T))*perSpin;//CVavg
-    MC_cycles(cycle) = cycle;
-    return;
-}
-*/
-
-
-
-
-
-/*
-
-void SaveAllValues(int N, int cycle, double T, vec& numValues, vec& meanE, vec& meanCv,
-                   vec& meanM, vec& meanX, vec& MC_cycles, double E, double M){
-    \\Saves the mean values from every monte
-     \\MC cycle into a matrix
-    numValues(0) += E; numValues(1) += M;
-    numValues(2) += E*E; numValues(3) += M*M;
-    numValues(4) += abs(M);
-
-    double norm = 1.0/((double) cycle); //divide by tot. num. of cycles
-    double perSpin = 1.0/((double) N*(double) N);
-    double Eavg = numValues(0)*norm;
-    double Mavg = numValues(1)*norm;
-    double E2avg = numValues(2)*norm;
-    double M2avg = numValues(3)*norm;
-    double absMavg = numValues(4)*norm;
-
-    meanE(cycle) = Eavg*perSpin;//Eavg
-    meanCv(cycle) = ((E2avg - Eavg*Eavg)/(T*T))*perSpin;//CVavg
-    meanM(cycle) = absMavg*perSpin;//absMavg
-    meanX(cycle) = ((M2avg - absMavg*absMavg)/T)*perSpin;//absXavg
-    MC_cycles(cycle) = cycle;
-    return;
-}
-
-
-void WriteToFileMCC(int MCC, ofstream &numericalFile, vec& meanE, vec& meanCv,
-                    vec& meanM, vec& meanX, vec& MC_cycles, vec count){
-    //Printed as: E, Cv, M, X, |M|, |X|, #MCC
-    for(int cycles=0 ; cycles<MCC ; cycles++){
-        numericalFile << setprecision(8) << meanE(cycles) << setw(25) <<
-                 meanCv(cycles) << setw(25) << meanM(cycles) <<
-                 setw(25) << meanX(cycles) << setw(25) <<
-                 MC_cycles(cycles) << setw(25) << count(cycles) << endl;
-    }
-
-    return;
-}
-
-
-            //WriteToFileMCC(MCC, numericalFile, meanE, meanCv, meanM,
-              //             meanX, MC_cycles, countVec);
-                //SaveAllValues(N, cycle, T, numValues, meanE, meanCv,
-                  //            meanM, meanX, MC_cycles, E, M);
-
-*/
 
 
 
