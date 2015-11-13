@@ -5,6 +5,7 @@ clc
 file = 'P_E_T2p4.txt';
 P = load(file(:));
 E = linspace(-800,800,1600);
+
 plot(E,P,'r')
 title('Probability of total energy','fontsize',18)
 xlabel('E/J','fontsize',18)

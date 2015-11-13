@@ -107,6 +107,7 @@ vec outputValues(double T, int N, int MCc, vec& numValues){
     outputValues(5) = ((M2avg - absMavg*absMavg)/T)*perSpin;//absXavg
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 //    Evariance(numMCC) = outputValues(1)*(T*T);
 //    Mvariance(numMCC) = outputValues(3)*T;
@@ -123,6 +124,8 @@ vec outputValues(double T, int N, int MCc, vec& numValues){
 //        Mvariance.fill(0);
 //    }
 
+=======
+>>>>>>> parent of 874c528... d) almost done
 =======
 >>>>>>> parent of 874c528... d) almost done
     return outputValues;
@@ -208,6 +211,43 @@ void WriteToFileMCC(int MCC, ofstream &numericalFile, vec& meanE, vec& meanCv,
     return;
 }
 
+void SaveAllValues(int N, int cycle, double T, vec& numValues, vec& meanE, vec& meanCv,
+                   vec& meanM, vec& meanX, vec& MC_cycles, double E, double M){
+    /*Saves the mean values from every monte
+     MC cycle into a matrix*/
+    numValues(0) += E; numValues(1) += M;
+    numValues(2) += E*E; numValues(3) += M*M;
+    numValues(4) += abs(M);
+
+    double norm = 1.0/((double) cycle); //divide by tot. num. of cycles
+    double perSpin = 1.0/((double) N*(double) N);
+    double Eavg = numValues(0)*norm;
+    double Mavg = numValues(1)*norm;
+    double E2avg = numValues(2)*norm;
+    double M2avg = numValues(3)*norm;
+    double absMavg = numValues(4)*norm;
+
+    meanE(cycle) = Eavg*perSpin;//Eavg
+    meanCv(cycle) = ((E2avg - Eavg*Eavg)/(T*T))*perSpin;//CVavg
+    meanM(cycle) = absMavg*perSpin;//absMavg
+    meanX(cycle) = ((M2avg - absMavg*absMavg)/T)*perSpin;//absXavg
+    MC_cycles(cycle) = cycle;
+    return;
+}
+
+void WriteToFileMCC(int MCC, ofstream &numericalFile, vec& meanE, vec& meanCv,
+                    vec& meanM, vec& meanX, vec& MC_cycles, vec count){
+    //Printed as: E, Cv, M, X, |M|, |X|, #MCC
+    for(int cycles=0 ; cycles<MCC ; cycles++){
+        numericalFile << setprecision(8) << meanE(cycles) << setw(25) <<
+                 meanCv(cycles) << setw(25) << meanM(cycles) <<
+                 setw(25) << meanX(cycles) << setw(25) <<
+                 MC_cycles(cycles) << setw(25) << count(cycles) << endl;
+    }
+
+    return;
+}
+
 
 void initializeSpin(double T, int N, mat& s, long& idum,
                     double& E, double& M){
@@ -249,6 +289,7 @@ void initializeSpin(double T, int N, mat& s, long& idum,
     return;
 }
 
+<<<<<<< HEAD
 void ising(int N, int Tsteps, int MCCmax, int MCClimit,int my_rank,
           int numprocs, vec& numValues){
 
@@ -326,17 +367,24 @@ void ising(int N, int Tsteps, int MCCmax, int MCClimit,int my_rank,
 
     return;
 }
+=======
+
+>>>>>>> parent of 874c528... d) almost done
 
 
 
 
 
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> parent of 874c528... d) almost done
 
 
 >>>>>>> parent of 874c528... d) almost done
 
+<<<<<<< HEAD
 //            MCC += MCCstep;
 //            numMCC += 1;
         }
@@ -356,6 +404,11 @@ void ising(int N, int Tsteps, int MCCmax, int MCClimit,int my_rank,
 
 
 
+=======
+
+
+
+>>>>>>> parent of 874c528... d) almost done
 
 
 >>>>>>> parent of 874c528... d) almost done

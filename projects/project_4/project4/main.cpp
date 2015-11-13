@@ -70,6 +70,9 @@ int main(int argc, char* argv[])
 
 
 
+
+
+
 int main()
 {
     long idum = -clock();
@@ -126,17 +129,28 @@ int main()
                          T, MCC, count);
             //WriteToFileMCC(MCC, numericalFile, meanE, meanCv, meanM,
               //             meanX, MC_cycles, countVec);
+<<<<<<< HEAD
 
             MCC += MCCstep;
 
         }
 
+=======
+
+            MCC += MCCstep;
+
+        }
+
+>>>>>>> parent of 874c528... d) almost done
         T += Tstep;
     }
 
     analyticalFile.close();
     numericalFile.close();
 
+<<<<<<< HEAD
+>>>>>>> parent of 874c528... d) almost done
+=======
 >>>>>>> parent of 874c528... d) almost done
     return 0;
 }

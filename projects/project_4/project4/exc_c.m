@@ -3,6 +3,7 @@ close all
 clc
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 file_mcc1 = 'num_mcc_T1p0_Sallup.txt';%Temp = 1.0
 file_mcc2 = 'num_mcc_T2p4_Srand.txt';%Temp = 2.4
 num1 = load(file_mcc1(:));
@@ -84,9 +85,31 @@ ylabel('counts','fontsize',18)
 set(gca,'FontSize',15)
 
 
+=======
+files_mcc = 'num_mcc.txt';%Temp = 1.0
+num = load(files_mcc(:));
 
+numE = num(:,1)
+numCv = num(:,2);
+numAbsM = num(:,5);
+numAbsX = num(:,6);
+MCC = num(:,8);
+count = num(:,9);
 
+figure(1)
+plot(MCC,numE)
 
+figure(2)
+plot(MCC,count)
+>>>>>>> parent of 874c528... d) almost done
+
+% figure(2)
+% plot(MCC,numCv)
+
+figure(3)
+plot(MCC,numAbsM)
+
+<<<<<<< HEAD
 
 =======
 files_mcc = 'num_mcc.txt';%Temp = 1.0
@@ -112,5 +135,7 @@ plot(MCC,count)
 figure(3)
 plot(MCC,numAbsM)
 
+=======
+>>>>>>> parent of 874c528... d) almost done
 % figure(4)
 % plot(MCC,numAbsX)

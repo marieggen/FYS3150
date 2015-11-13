@@ -24,6 +24,7 @@ void WriteOutMatrix(mat s, int number);
 
 void SaveAllValues(int N, int cycle, double T, vec& numValues, vec& meanE, vec& meanCv,
                    vec& meanM, vec& meanX, vec& MC_cycles, double E, double M);
+<<<<<<< HEAD
 
 <<<<<<< HEAD
 void ising(int N, int Tsteps, int MCCmax, int MCClimit,int my_rank,
@@ -32,6 +33,11 @@ void ising(int N, int Tsteps, int MCCmax, int MCClimit,int my_rank,
 //void SaveAllValues(int N, int cycle, double T, vec& numValues, vec& meanE, vec& meanCv,
 //vec& meanM, vec& meanX, vec& MC_cycles, double E, double M);
 =======
+void WriteToFileMCC(int MCC, ofstream &numericalFile, vec& meanE, vec& meanCv,
+                    vec& meanM, vec& meanX, vec& MC_cycles, vec count);
+>>>>>>> parent of 874c528... d) almost done
+=======
+
 void WriteToFileMCC(int MCC, ofstream &numericalFile, vec& meanE, vec& meanCv,
                     vec& meanM, vec& meanX, vec& MC_cycles, vec count);
 >>>>>>> parent of 874c528... d) almost done

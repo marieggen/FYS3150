@@ -10,7 +10,7 @@
 \usepackage{subcaption}
 
 \begin{document}
-\title{FYS3150 - Project 4 - The ising model}
+\title{FYS3150 - Project 4 - The Ising model}
 \author{Mari Dahl Eggen - Candidate number 5}
 \maketitle
 
@@ -21,15 +21,12 @@
 \begin{flushleft}
 \newpage
 \begin{abstract}
-hei
+In this project we are getting known with the Ising model in two dimensions. We will experience that it has a complicated analytical solution, and that it is almost impossible to find analytical solutions to spin systems that are much larger than a 2x2-lattice. This is  because the number of microstates is growing fast with the size of the system. Because of this we have to use simulations of bigger spin systems, to get information about it. Even the spin systems that we are able to simulate are small compared to the real worlds thermodynamic systems, but we will see that they are a good approximation.   
 \end{abstract}
-hei
 \section{Introduction}
+The Ising model is a mathematical model that can be used to get information about  phase transitions of a thermodynamic system. It consists of a chosen number of spins which represents the magnetic dipole moments of atomic spins. The spins are either pointing up or down, and arranged in a matrix so that each spin just have four neighbors to interact with. It is a mathematical model that is hard to handle analytically, but in $1944$ the mathematical genius Lars Onsager worked out a analytical solution for it. In this project we are interested in looking at some properties of the Ising model during a phase transition. Those are the  thermodynamical parameters energy $E$ and magnetization $M$, which we again can use to find the specific heat capacity $C_V$ and the magnetic susceptibility $X$. All this four properties are extensive, which means that they depends on the number of spins in the system.  $C_V$ tells us something about the amount of heat needed to raise the temperature of a system, and $X$ tells us something about whether the system is attracted to or repelled out of a magnetic field. The only intensive property we are interested in here is the temperature of the system. That means, we will in this project look at how the spin system behaves, how the intensive properties are changing, for different temperatures in the system. 
 \newpage
 \section{Theory}
-\subsection{The ising model in two dimension}
-The Ising model is a mathematical model that can be used to show a phase transition of a system. It consists of a chosen number of spins which represents the magnetic dipole moments of atomic spins. The spins are either pointing up or down, and arranged in a matrix so that each spin just have four neighbors to interact with. It is a mathematical model that is hard to handle analytically, but in $1944$ the mathematical genius Lars Onsager worked out a analytical solution for it. In this project we are interested in looking at some properties of the Ising model during a phase transition. Those are the thermodynamical parameters internal energy $E$ and magnetization $M$, which we again can use to find the specific heat capacity $C_V$ and the magnetic susceptibility $X$. All this four properties is extensive, which means that they depends on the number of spins in the system.  $C_V$ tells us something about the amount of heat needed to raise the temperature of a system, and $X$ tells us something about whether the system is attracted to or repelled out of a magnetic field. The only intensive property we are interested in here is the temperature of the system.  
-
 \subsection{The ising model in 2x2-lattice}
 In the 2x2 Ising model  we can find the analytical expression for the systems partition function, and its mean expressions for energy, specific heat capacity, magnetization and susceptibility, in a feasible way. For bigger systems this is also possible, but it will take quite some time to finish, because the possible spin combinations in the system will grow rapidly with the size of the system.  
 \subsubsection{Energy states and partition function}
@@ -48,7 +45,6 @@ where $s_i = 1$ corresponds to spin up and $s_i = -1$ corresponds to spin down. 
 Z = \sum\limits_{i=1}^{M}e^{-\beta E_i} = \sum\limits_E \Omega(E_i)e^{-\beta E_i},
 \end{equation}
 \vspace{5mm} 
-\newpage
 where $M = 16$ is the number of microstates, which corresponds to the number of possible energy states in the system. $e^{-\beta E_i}$ is a given probability distribution where $\beta = \frac{1}{kT}$, where $k$ is the Boltzmann constant and $T$ is the temperature of the system. The first sum in Eq. (\ref{eq:partition_def}) is the same as summing over the possible energies $-8J, 0, 8J$, and multiply by the corresponding multiplicity $\Omega(E_i)$ of the given energy. Then we have\\
 \vspace{5mm}
 $$Z = \sum\limits_E \Omega(E_i)e^{-\beta E_i} = 2e^{8J\beta} + 12e^{0}+2e^{-8J\beta}.$$\\
@@ -85,7 +81,6 @@ Z = 4\cosh(8J\beta) + 12.
 \end{center}
 \caption{\label{tab:energy_states}The possible energy sates in the 2x2 spin system listed for the different spin combinations in Figure \ref{fig:spin_comb}.}
 \end{table}
-\newpage
 \subsubsection{Mean expressions of energy and specific heat capacity}
 It can be shown that the mean energy of a thermodynamic	system is given by
 \vspace{5mm}
@@ -114,7 +109,7 @@ $$ = -\frac{1}{kT^2}\frac{\partial}{\partial\beta}\left< E\right> = -\frac{1}{kT
 \vspace{10mm}
 $$ = \frac{1}{kT^2} \left[\frac{64J^2\cosh(8J\beta)\left(\cosh(8J\beta) + 3\right) - 8J\sinh(8J\beta)8J\sinh(8J\beta)}{\left(\cosh(8J\beta) + 3\right)^2}\right]$$\\
 \vspace{5mm}
-\newpage
+
 $$ = \frac{1}{kT^2} \left[\frac{64J^2\cosh(8J\beta)}{\cosh(8J\beta) + 3} - \frac{64J^2\sinh^2(8J\beta)}{\left(\cosh(8J\beta) + 3\right)^2}\right]$$\\
 \vspace{5mm}
 $$ = \frac{64J^2}{kT^2\left(\cosh(8J\beta\right) + 3)}\left[\cosh(8J\beta) - \frac{\sinh^2(8J\beta)}{\cosh(8J\beta) + 3}\right]$$\\
@@ -178,9 +173,8 @@ $$\left<X\right> = \frac{1}{kT}\left(\frac{8\left(e^{8J\beta} + 1\right)}{\cosh(
 or, if we use the mean of the absolute value of the magnetization, we get
 \vspace{5mm}
 $$\left<|X|\right> = \frac{1}{kT}\left(\frac{8\left(e^{8J\beta} + 1\right)}{\cosh(8J\beta) + 3} - \left(\frac{4 + 2e^{8J\beta}}{\cosh(8J\beta) + 3}\right)^2\right).$$\\
-\newpage
 \subsection{Numerical calculations}
-When we are looking at bigger spin systems than the 2x2-lattice, we more or less have to do the calculations on the system by use of a computer. We can choose an initial spin system with a given microstate, choose an optional temperature, and then simulate the evolution of the system by use of a Monte Carlo simulation. Then we can sum up the energies in every microstate that appears during the simulation, and then divide by the number of Monte Carlo cycles to find the mean energy of the system. The mean of the absolute magnetization can be found the same way. Thus, we have that
+When we are looking at bigger spin systems than the 2x2-lattice, we more or less have to do the calculations on the system by use of a computer. We can choose an initial spin system with a given microstate, choose an optional temperature, and then simulate the evolution of the system by use of a Monte Carlo simulation. Then we can sum up the energies in every microstate that appears during the simulation, and then divide by the number of Monte Carlo cycles to find the mean energy of the system. We will also in this project divide on the number of spins in the system, because we are interested in the energy per spin. The mean of the absolute magnetization per spin can be found the same way. Thus, we have that
 \vspace{5mm}
 \begin{equation}\label{eq:num_meanE}
 \left<E\right> = \frac{1}{MCC}\sum\limits_j E_j
@@ -194,7 +188,7 @@ where $MCC$ is the number of Monte Carlo cycles and $E_j$ and $M_j$ respectively
 \vspace{5mm}
 $$\left<C_V\right> = \frac{1}{kT^2}\left(\left<E^2\right> - \left<E\right>^2\right)\quad\text{and}\quad \left<|X|\right> = \frac{1}{kT}\left(\left<M^2\right> - \left<|M|\right>^2\right)$$\\
 \vspace{5mm}
-respectively. We can find $\left<E^2\right>$ by changing out $E_j$ by $E_j^2$ in Eq. (\ref{eq:num_meanE}), and $\left<M^2\right>$ by changing out $|M_j|$ by $M_j^2$ in Eq. (\ref{eq:num_meanM}). 
+We can find $\left<E^2\right>$ by changing out $E_j$ by $E_j^2$ in Eq. (\ref{eq:num_meanE}), and $\left<M^2\right>$ by changing out $|M_j|$ by $M_j^2$ in Eq. (\ref{eq:num_meanM}). 
 
 \subsection{The Monte Carlo process}
 To pick the most appropriate selection of random states in the Monte Carlo simulation of a evolving system according to the given probability distribution $e^{-\beta E_i}$, Markov Chains and the Metropolis algorithm with detailed balance can be used.
@@ -234,30 +228,29 @@ This ensures that we accept all moves that takes us to a state with lower energy
 \vspace{5mm}
 In addition to solve the problem with the missing transition probability matrix, the Metropolis algorithm also gives us the opportunity to do the simulations without having to calculate probabilities 
 \vspace{5mm}
-$$P_i(\beta) = \frac{e^{-\beta E_i}}{Z} =\frac{e^{-\beta E_i}}{\sum\limits_{i=1}^{M}e^{-\beta E_i}}.$$\\
+\begin{equation}\label{eq:prob_distr}
+P_i(\beta) = \frac{e^{-\beta E_i}}{Z} =\frac{e^{-\beta E_i}}{\sum\limits_{i=1}^{M}e^{-\beta E_i}}.
+\end{equation}
 \vspace{5mm}
 The favor of this is that the partition function can be almost impossible to calculate.
 
 \subsection{Phase transition}
-In this project we are looking at a system without an external magnetic field. Because of that the two dimensional Ising model undergoes a phase transition of second order, which means that the system exhibits a spontaneous magnetization $\left<M\right> \neq 0$ below a given critical temperature $T_C$. Above $T_C$ we have that $\left<M\right> = 0$, which means that the magnetization approaches zero with an infinite slope when the temperature of the system goes to $T_C$. The properties $C_V$ and $X$ are discontinuous, or will diverge as the temperature goes to $T_C$ for a system with infinitely large lattice. This means that the variance of the energy and magnetization of the system also will be discontinuous or diverge in this thermodynamic limit. We can not do a simulation of a system with an infinitely large lattice, and because of this our calculated values of $C_V$ and $X$ in the thermodynamic limit will not exhibit a diverging behavior. If we simulate system that are big enough, we will still see that the values of $C_V$ and $X$ near $T_C$ grows, and creates a big maximum. It can be shown though, that the critical temperature of a system with a infinitely number of spin scales as
+In this project we are looking at a system without an external magnetic field. Because of that the two dimensional Ising model undergoes a phase transition of second order, which means that the system exhibits a spontaneous magnetization $\left<M\right> \neq 0$ below a given critical temperature $T_C$. Above $T_C$ we have that $\left<M\right> = 0$, which means that the magnetization approaches zero with an infinite slope when the temperature of the system goes to $T_C$. The properties $C_V$ and $X$ are discontinuous, or will diverge as the temperature goes to $T_C$ for a system with infinitely large lattice. This means that the variance of the energy and magnetization of the system also will be discontinuous or diverge in this thermodynamic limit. We can not do a simulation of a system with an infinitely large lattice, and because of this our calculated values of $C_V$ and $X$ in the thermodynamic limit will not exhibit a diverging behavior. If we simulate systems that are big enough, we will still see that the values of $C_V$ and $X$ near $T_C$ grows, and creates a big maximum. It can be shown though, that the critical temperature of a system with a infinitely number of spin scales as
 \vspace{5mm}
 \begin{equation}\label{eq:propto_TC}
-T_C(N) -T_C(N = \infty) \propto aL^{\frac{1}{\nu}}.
+T_C(N) -T_C(N = \infty) = aL^{\frac{1}{\nu}}.
 \end{equation}
 \vspace{5mm}
 
-
-
-\newpage
 \section{Method}
 \subsection{Dimensionless variables}
-To get the results in this project on a general form we use dimensional variables during the numerical calculations. If we introduce the dimensionless temperature $\frac{kT}{J}$, where $k$ is Boltzmann's constant and $J>0$ is a coupling constant, the dimensionless energy, specific heat capacity, magnetization and susceptibility is given by
+To get the results in this project on a general form we use dimensional variables during the numerical calculations. If we introduce the dimensionless temperature $\frac{kT}{J}$, where $k$ is Boltzmann's constant and $J>0$ is a coupling constant, the dimensionless energy, specific heat capacity, magnetization and magnetic susceptibility is given by
 \vspace{5mm}
 $$\frac{E}{J},\quad \frac{C_V}{k},\quad M,\quad X\cdot J$$\\
 \vspace{5mm}
 respectively.
 \subsection{Evolution of the system}
-We are looking at a spin system in two dimensions, so that the system can be represented as a matrix. The number of rows and columns of the matrix is determined from the number of spins in the system. In this case we are just looking at quadratic matrices, so that the size of the system is given by $N\cdot N$, where $N$ is the number of spins in one direction. During every Monte Carlo cycle, we try to flip all the spins in the spin matrix, and the flip is either accepted or rejected. In order to reach the equilibrium state of the system in an efficient way, we choose to flip one spin at a time in the in the matrix, because we then only have five possible changes in the energy per flip, namely $\Delta E = -8J, -4J, 0, 4J, 8J$. This comes from the fact that $\Delta E = E_2 - E_1$, and we can show it by use of Eq. (\ref{eq:energy_2x2}).
+We are looking at a spin system in two dimensions, so that the system can be represented as a matrix. The number of rows and columns of the matrix is determined from the number of spins in the system. In this case we are just looking at quadratic matrices, so that the size of the system is given by $N\cdot N$, where $N$ is the number of spins in one dimension. During every Monte Carlo cycle, we try to flip all the spins in the spin matrix, and the flip is either accepted or rejected. In order to reach the equilibrium state of the system in an efficient way, we choose to flip one spin at a time in the matrix, because we then only have five possible changes in the energy per flip, namely $\Delta E = -8J, -4J, 0, 4J, 8J$. This comes from the fact that $\Delta E = E_2 - E_1$, and we can show it by use of Eq. (\ref{eq:energy_2x2}).
 \vspace{5mm}
 $$\Delta E = E_2 - E_1 = J\sum\limits_{<kl>}^{N}s_k^1 s_l^1 -J\sum\limits_{<kl>}^{N}s_k^2 s_l^2$$\\
 \vspace{5mm}
@@ -268,23 +261,21 @@ where we have used that $s_l^1 = 1$ if $s_l^2 = -1$, and vice versa. The nearest
 $$\Delta E = 2Js_l^1\sum\limits_{<kl>}^{N} s_k.$$\\
 \vspace{5mm} 
 From this relation we see that we only have the five possible values of change in energy per flip, which means that we can precalculate the possible values of the probability distribution $e^{-\beta\Delta E_i}$. This relation also makes it easy to update the energy during the evolution of the simulated system. We can do a similar deriving for the new magnetization values of the simulated system, then vi get that
-\vspace{5mm}
+
 $$M_2 = M_1 + 2s_l^2.$$\\ 
-\vspace{5mm}
 
 \subsection{When is equilibrium reached?}
-When we calculate the parameters we are interested in for the spin system, we want the system to be in equilibrium. The reason for that is that we then get a knowledge of the system at a given constant temperature, we are not interested in the behavior of the system when it is in change towards the equilibrium. Through our simulations of the spin system we have to simulate this change as well, in order to get from the initial spin matrix to the most probable spin matrix. Then, if we use the data from the whole simulation, there is data form the phase where the system i moving towards equilibrium, that will do our results less accurate. In order to fix this little bug we will find out how many cycles it takes for the system to reach equilibrium. We will look at the two temperatures $kT/J = 1.0$ and $kT/J = 2.4$, so that we can check this for both ordered and random initial spin matrix.The strategy is to simulate a 20x20-lattice spin system for each temperature with $5000$ Monte Carlo cycles. After the calculations we divide the calculated values in ten intervals, and checks the change in variance from one interval to the other. When the spin system has reached equilibrium, the change in variance will be minimal. Then we have a clue of approximately how many Monte Carlo cycles it takes to reach equilibrium. For the future simulations of the spin system, we can start calculate the mean values after the Monte Carlo cycle limit that we find. 
+When we calculate the parameters we are interested in for the spin system, we want the system to be in equilibrium. The reason for that is that we then get a knowledge of the system at a given constant temperature, we are not interested in the behavior of the system when it is in change towards the equilibrium. Through our simulations of the spin system we have to simulate this change as well, in order to get from the initial spin matrix to the most probable spin matrix. Then, if we use the data from the whole simulation, there is data form the phase where the system i moving towards equilibrium, that will do our results less accurate. In order to fix this little bug we will find out how many cycles it takes for the system to reach equilibrium. We will look at the two temperatures $kT/J = 1.0$ and $kT/J = 2.4$, so that we can check this for both ordered and random initial spin matrix.The strategy is to simulate a 20x20-lattice spin system for each temperature with $5000$ Monte Carlo cycles. After the calculations we divide the calculated values in ten intervals, and checks the change in variance from one interval to the other. When the spin system has reached equilibrium, the change in variance will be minimal. Then we have a clue of approximately how many Monte Carlo cycles it takes to reach equilibrium. For the future simulations of the spin system, we can start calculate the mean values after the Monte Carlo cycle limit that we found. 
 
 \subsection{The probability of a given energy}
-We wish find the probability for each possible energy of the total system. We can find the probability $P(E)$ by finding the frequency of each of the possible total energy, and then divide the number of appearance by the total number of computed energies during the simulation. 
+We wish to find the probability for each possible energy of the total system. We can find the probability $P(E)$ by finding the frequency of each of the possible total energies, and then divide the number of appearances by the total number of computed energies during the simulation. 
 
 \subsection{Code optimization}
-In this project there is a lot of calculations that are executed in big for-loops. This leads to a slow program, and we want to do something to make it faster. In this case Message Passing Interface (MPI) has been used.  MPI is a library that allows us to split the calculations done by a program into several processes, so that the different parts are calculated at the same time. In this case the program is split into four processes, which makes the program up to four times faster that it would have been without the use of MPI. Generally the process-threads have to communicate with each other to get the information out in the right way, but in the program made for this project this is not the case.   
+In this project there is a lot of calculations that are executed in big for-loops. This leads to a slow program, and we want to do something to make it faster. In this case Message Passing Interface (MPI) has been used.  MPI is a library that allows us to split the calculations done by a program into several processes, so that the different parts are calculated at the same time. In this case the program is split into four processes, which makes the program up to four times faster than it would have been without the use of MPI. Generally the process-threads have to communicate with each other to get the information out in the right way, but in the program made for this project this is not the case.   
 
 \subsection{Verification of results}
-No explicit unit tests are used in this project. The strategy to develop a program that returns accepted results has been to compare them with analytically calculated result. Since we are only in possession of analytically calculated results for the two dimensional Ising model in a 2x2-lattice, the program was first written compute $E$, $C_V$, $M$ and $X$ for a system like that. Then different variables was adjusted, so that the relative estimate between the numerical and analytacal results got reasonable small. Then we could begin calculate for bigger systems. To verify the numerical calculations for the bigger systems, we can compare the numerical value of $kT_C/J$ found by help of Eq. (\ref{eq:propto_TC}), with the exact result $kT_C/J = \frac{2}{\ln(1+\sqrt{2})} \approx 2.269$ (found by Lars Onsager).
+No explicit unit tests are used in this project. The strategy to develop a program that returns acceptable results has been to compare them with analytically calculated result. Since we are only in possession of analytically calculated results for the two dimensional Ising model in a 2x2-lattice, the program was first written to compute $E$, $C_V$, $M$ and $X$ for a system like that. Then different variables was adjusted, so that the relative estimate between the numerical and analytacal results got reasonable small. Then we could begin the calculations for bigger systems. To verify the numerical calculations for the bigger systems, we can compare the numerical value of $kT_C/J$ found by help of Eq. (\ref{eq:propto_TC}), with the exact result $kT_C/J = \frac{2}{\ln(1+\sqrt{2})} \approx 2.269$ (found by Lars Onsager).
 
-\newpage
 \section{Results and discussion}
 \subsection{Comparison of data for low temperature in 2x2-lattice}
 In section 2.2.2 and 2.2.3 the analytical expressions for $\left<E\right>$, $\left<C_V\right>$, $\left<|M|\right>$ and $\left<|X|\right>$ was calculated. Those mean values was calculated for the low temperature $\frac{kT}{J} = 1$, and the results are listed in Table \ref{tab:analytic_low_T}. Then the mean values was calculated by use of the Monte Carlo process for different a different number of Monte Carlo cycles. The results are listed in Table \ref{tab:numeric_low_T}, together with the relative error in comparison with the real values in Table \ref{tab:analytic_low_T}. We can see that the numerical calculated values have a pretty bad accuracy from $10^2$ cycles to $10^4$ cycles. Then there is happening something strange. The values calculated with $10^5$ cycles has a pretty good accuracy compared with the accuracy of the values computed for fewer cycles, but also just as good as, or even better than the accuracy for the values computed for more cycles. We would have expected that an increase in the number of cycles had given more accurate results. The reason for that this is happening is most likely because we are ending up with adding small numbers to gigantic numbers in the calculations of the mean values. The bigger the number of Monte Carlo cycles, the bigger the sum of all the quantities is before we divide by the number of cycles. We can also notice that the values calculated by use of $10^5$ cycles has a better accuracy that those calculated by use of $10^6$. This is just coincident, because every execution of the program has a different random walk. Based on the results discussed, we assume that a execution of the program with $10^5$ Monte Carlo cycles gives results with accuracy which is good enough for this project.\\
@@ -351,10 +342,6 @@ In section 2.2.2 and 2.2.3 the analytical expressions for $\left<E\right>$, $\le
 \subsection{Mean values versus number of Monte Carlo cycles}
 In Figure \ref{fig:equilibrium_E_T1p0}, \ref{fig:equilibrium_M_T1p0}, \ref{fig:equilibrium_E_T2p4} and \ref{fig:equilibrium_M_T2p4} we see the computed mean values of dimensionless $E$ and $M$, for the number of Monte Carlo cycles from $0$ to $5000$, for two different temperatures. The data in each of those figures are divided into ten intervals, and the change in variance, given in percent, from one interval to the other, is listed in Table \ref{tab:comp_intervals_MCC_T1} and \ref{tab:comp_intervals_MCC_T2.4}. For $kT/J = 1$, we can see that the change in variance is small between all the intervals for $E$ and $M$. The reason for this is that the initial spin matrix it fully ordered with all spins up, which makes the way to equilibrium very short, because the temperature is so small. For $kT/J = 2.4$ on the other hand, the change in variance between the intervals for $E$ and $M$ are pretty big for the first intervals. This is because the initial matrix for temperatures over $1.5$ is unsorted in a random way, and it will take more Monte Carlo cycles to reach the equilibrium. Because the change between interval $6$ and $7$ for $M$ at $T=2.4$ is quite big, we choose to start the sampling of values in the program after $5000$ cycles, to be on the safe side. To make up for the lost cycles, we add $5000$ cycles to the total number of Monte Carlo cycles. That is, if we want do a simulation of the spin system with $10^5$ Monte Carlo cycles, we set the total number of Monte Carlo cycles to be $10^5+5000$.
 
-\subsection{Accepted spin configurations}
-In Figure \ref{fig:equilibrium_count_T1p0} and \ref{fig:equilibrium_count_T2p4} we can see the mean value of the number of accepted spin flips in the simulation of the spin system, as a function of the total number of Monte Carlo cycles. The simulations for the two temperatures is done for a 20x20 spin matrix, which gives a total of $400$ spins in the system. For $kT/J=1$ the mean number of accepted spin configurations lies around $0.3$, which means that only about $0.075\%$ of the spins in the matrix is flipped each Monte Carlo cycle. For $kT/J = 2.4$ the mean number of accepted spin configurations is a lot bigger, around $110$, which means that about $27.5\%$ of the spins in the spin matrix is being flipped each Monte Carlo cycle. Here we get a verification of that the spins in the system has a bigger freedom to move for bigger temperatures. This means that out choice of the initial matrices, ordered for low temperatures and unsorted in a random way for higher temperatures, is a good choice.
-
-\newpage
 \begin{figure}[!h]
 \centering
 \begin{minipage}[b]{0.45\linewidth}
@@ -383,7 +370,9 @@ In Figure \ref{fig:equilibrium_count_T1p0} and \ref{fig:equilibrium_count_T2p4} 
   \label{fig:equilibrium_M_T2p4}
 \end{minipage}
 \end{figure}
-
+\newpage
+\subsection{Accepted spin configurations}
+In Figure \ref{fig:equilibrium_count_T1p0} and \ref{fig:equilibrium_count_T2p4} we can see the mean value of the number of accepted spin flips in the simulation of the spin system, as a function of the total number of Monte Carlo cycles. The simulations for the two temperatures is done for a 20x20 spin matrix, which gives a total of $400$ spins in the system. For $kT/J=1$ the mean number of accepted spin configurations lies around $0.3$, which means that only about $0.075\%$ of the spins in the matrix is flipped each Monte Carlo cycle. For $kT/J = 2.4$ the mean number of accepted spin configurations is a lot bigger, around $110$, which means that about $27.5\%$ of the spins in the spin matrix is being flipped each Monte Carlo cycle. Here we get a verification of that the spins in the system has a bigger freedom to move for bigger temperatures. This means that out choice of the initial matrices, ordered for low temperatures and unsorted in a random way for higher temperatures, is a good choice.
 
 \begin{figure}[!h]
 \centering
@@ -446,90 +435,32 @@ In Figure \ref{fig:equilibrium_count_T1p0} and \ref{fig:equilibrium_count_T2p4} 
 \end{table}
 
 \subsection{The probability of a given energy}
-The total energy probabilities for $kT/J = 1$ and $kT/J=2.4$ are graphed in Figure \ref{fig:E_prob_t1p0} and \ref{fig:E_prob_t2p4} respectively. The graph in Figure \ref{fig:E_prob_t1p0} is just as expected. For such a low temperature the spin system is almost totally ordered in equilibrium, which leads to the maximum value of the magnitude of the energy, as we can see in Table \ref{tab:energy_states}. When it comes to the total energy probabilities at higher temperatures, we would expect a bigger variance, because the spin system can reach many more microstates. From Figure \ref{fig:E_prob_t2p4} we can see that this is also the case. 
+The total energy probabilities for $kT/J = 1$ and $kT/J=2.4$ are graphed in Figure \ref{fig:E_prob_t1p0} and \ref{fig:E_prob_t2p4} respectively. The graph in Figure \ref{fig:E_prob_t1p0} is just as expected. For such a low temperature the spin system is almost totally ordered in equilibrium, which leads to the maximum value of the magnitude of the energy, as we can see in Table \ref{tab:energy_states}. When it comes to the total energy probabilities at higher temperatures, we would expect a bigger variance, because the spin system can reach many more microstates. From Figure \ref{fig:E_prob_t2p4} we can see that this is also the case. The computed variance of those data is about $3000$, that is a standard deviation of around $54$, and the mean energy is around $-490$. A normal distribution is fitted to the data in Figure \ref{fig:E_prob_t2p4}, where the standard deviation is set to $\sigma = 54$ and the mean value is set to $\mu =  -490$. In addition the normal distribution is multiplied with $4$, so to reach the size of the data. We see that the fit is very good. Of course, now the area under the graph of the normal distribution is bigger that $1$ because it is continuous. The sum of all the total energy probabilities is $1$ though. We can see that the given probability distribution in Eq. (\ref{eq:prob_distr}) is a good choice then.  
 
 \begin{figure}[!h]
 \begin{center}
-\includegraphics[scale=0.6]{excd_E_T1p0.png}
+\includegraphics[scale=0.4]{excd_E_T1p0.png}
 \caption{\label{fig:E_prob_t1p0}The probability of a given total energy of the spin system for $kT/J=1$.}
 \end{center}
 \end{figure}
 
 \begin{figure}[!h]
 \begin{center}
-\includegraphics[scale=0.6]{excd_E_T2p4.png}
+\includegraphics[scale=0.5]{excd_E_T2p4.png}
 \caption{\label{fig:E_prob_t2p4}The probability of a given total energy of the spin system for $kT/J=2.4$. A normal distribution is fitted to the data.}
 \end{center}
 \end{figure}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+\newpage
 \subsection{Phase transition}
-
+In section 4.1 we concluded that a simulation with $10^5$ Monte Carlo cycles would give results that we are happy with in this project. In a spin system with a 20x20-lattice we executed one simulation with $10^5$ Monte Carlo cycles and one with $10^6$ Monte Carlo cycles, for $16$ temperatures in the interval $kT/J = [2.0,2.4]$. In Figure \ref{fig:CV_1e5_and_1e6} we can see $C_V$ graphed for the two simulations, and it is easy to see that the simulation with $10^6$ Monte Carlo cycles gives a more stable result than that of $10^5$. In Table \ref{tab:time_spent_T_c} we can see that the execution time for the simulation with $10^6$ Monte Carlo cycles was pretty fast, so we chose to continue the rest of the calculations with $10^6$ Monte Carlo cycles, to get better results.
 \begin{figure}[!h]
 \begin{center}
-\includegraphics[scale=0.6]{exce_cv_Tsteps16_N20.png}
+\includegraphics[scale=0.4]{exce_cv_Tsteps16_N20.png}
 \caption{\label{fig:CV_1e5_and_1e6}Comparison of $C_V$ for a 20x20-lattice, with $10^5$ Monte Carlo cycles and $10^6$ Monte Carlo cycles. $C_V$ is calculated at $16$ different temperatures.}
 \end{center}
 \end{figure}
 
-\begin{figure}[!h]
-\begin{center}
-\includegraphics[scale=0.6]{exce_E_Tsteps16_MCC1e6.png}
-\caption{\label{fig:E_1e6}The mean energy computed for $16$ different temperatures, with $10^6$ Monte Carlo cycles, for four different lattices. $N$ is the number of spins in one direction.}
-\end{center}
-\end{figure}
-
-\begin{figure}[!h]
-\begin{center}
-\includegraphics[scale=0.6]{exce_cv_Tsteps16_MCC1e6.png}
-\caption{\label{fig:cv_1e6}The mean specific heat capacity computed for $16$ different temperatures, with $10^6$ Monte Carlo cycles, for four different lattices. $N$ is the number of spins in one direction.}
-\end{center}
-\end{figure}
-
-
-\begin{figure}[!h]
-\begin{center}
-\includegraphics[scale=0.6]{exce_m_Tsteps16_MCC1e6.png}
-\caption{\label{fig:m_1e6}The mean absolute magnetization computed for $16$ different temperatures, with $10^6$ Monte Carlo cycles, for four different lattices. $N$ is the number of spins in one direction.}
-\end{center}
-\end{figure}
-
-\begin{figure}[!h]
-\begin{center}
-\includegraphics[scale=0.6]{exce_x_Tsteps16_MCC1e6.png}
-\caption{\label{fig:m_1e6}The mean absolute magnetic susceptibility computed for $16$ different temperatures, with $10^6$ Monte Carlo cycles, for four different lattices. $N$ is the number of spins in one direction.}
-\end{center}
-\end{figure}
-
-\begin{figure}[!h]
-\begin{center}
-\includegraphics[scale=0.6]{exce_cv_Tsteps16_MCC1e7.png}
-\caption{\label{fig:cv_1e7}The mean specific heat capacity computed for $16$ different temperatures, with $10^6$ Monte Carlo cycles, for five different lattices. $N$ is the number of spins in one direction. The graph with $N=100$ is calculated with $10^7$ Monte Carlo cycles.}
-\end{center}
-\end{figure}
-
-\begin{figure}[!h]
-\begin{center}
-\includegraphics[scale=0.6]{exce_m_Tsteps16_MCC1e7.png}
-\caption{\label{fig:m_1e7}The mean absolute magnetization computed for $16$ different temperatures, with $10^6$ Monte Carlo cycles, for five different lattices. $N$ is the number of spins in one direction. The graph with $N=100$ is calculated with $10^7$ Monte Carlo cycles.}
-\end{center}
-\end{figure}
-
-
-\newpage
 \begin{table}[!h]
 \begin{center}
 \begin{tabular}{| c | c | c | c |}
@@ -548,34 +479,59 @@ The total energy probabilities for $kT/J = 1$ and $kT/J=2.4$ are graphed in Figu
 \caption{\label{tab:time_spent_T_c}The time spent for the program to calculate $E$, $M$, $C_v$ and $X$ 16 times in the temperature interval $kT/J = [2.0,2.4]$, which means that the steps $\Delta kT/J = 0.025$. $N$ is the number of spins in one dimension and $MCC$ is the number of Monte Carlo cycles in each simulation.}
 \end{table}
 \newpage
+In Figure \ref{fig:E_1e6}, \ref{fig:cv_1e6}, \ref{fig:m_1e6} and \ref{fig:x_1e6} we can see the expectation values of respectively $E/J$, $C_V/k$, $M$ and $X\cdot J$, as a function of temperatures around the critical temperature $T_C$. Each figure shows the data calculated for a spin system with 20x20-, 40x40-, 60x60- and 80x80-lattice. We can see that the properties we are expecting for the specific heat capacity, magnetization and magnetic susceptibility, are getting more visible for bigger spin systems. This is also what we would expect, because bigger systems gives us better statistical results. Real systems has a size that is way bigger than what we are looking at. We can notice from Figure \ref{fig:E_1e6} that the energy is growing faster in the area around $T_C$ than it does otherwise.
 
+\begin{figure}[!h]
+\begin{center}
+\includegraphics[scale=0.6]{exce_E_Tsteps16_MCC1e6.png}
+\caption{\label{fig:E_1e6}The mean energy computed for $16$ different temperatures, with $10^6$ Monte Carlo cycles, for four different lattices. $N$ is the number of spins in one direction.}
+\end{center}
+\end{figure}
 
+To see if we could get an even better accuracy on data, we tried to run a simulation on a spin system with a 100x100-lattice, with $10^7$ Monte Carlo cycles. The results for the specific heat capacity and magnetization are graphed together with the previous results in Figure \ref{fig:cv_1e7} and \ref{fig:m_1e7} respectively. We can see that the results are getting a little bit better, but we can see from Table \ref{tab:time_spent_T_c} that the time spent on the execution is way above the time spent for the previous executions. Because of this we are satisfied with the results we got with $10^6$ Monte Carlo cycles, considering the computer capacity at hand.
+\newpage
+\begin{figure}[!h]
+\begin{center}
+\includegraphics[scale=0.5]{exce_cv_Tsteps16_MCC1e6.png}
+\caption{\label{fig:cv_1e6}The mean specific heat capacity computed for $16$ different temperatures, with $10^6$ Monte Carlo cycles, for four different lattices. $N$ is the number of spins in one direction.}
+\end{center}
+\end{figure}
 
+\begin{figure}[!h]
+\begin{center}
+\includegraphics[scale=0.5]{exce_m_Tsteps16_MCC1e6.png}
+\caption{\label{fig:m_1e6}The mean absolute magnetization computed for $16$ different temperatures, with $10^6$ Monte Carlo cycles, for four different lattices. $N$ is the number of spins in one direction.}
+\end{center}
+\end{figure}
+\newpage
+\begin{figure}[!h]
+\begin{center}
+\includegraphics[scale=0.5]{exce_x_Tsteps16_MCC1e6.png}
+\caption{\label{fig:x_1e6}The mean absolute magnetic susceptibility computed for $16$ different temperatures, with $10^6$ Monte Carlo cycles, for four different lattices. $N$ is the number of spins in one direction.}
+\end{center}
+\end{figure}
 
+\begin{figure}[!h]
+\begin{center}
+\includegraphics[scale=0.5]{exce_cv_Tsteps16_MCC1e7.png}
+\caption{\label{fig:cv_1e7}The mean specific heat capacity computed for $16$ different temperatures, with $10^6$ Monte Carlo cycles, for five different lattices. $N$ is the number of spins in one direction. The graph with $N=100$ is calculated with $10^7$ Monte Carlo cycles.}
+\end{center}
+\end{figure}
+\newpage
+\begin{figure}[!h]
+\begin{center}
+\includegraphics[scale=0.6]{exce_m_Tsteps16_MCC1e7.png}
+\caption{\label{fig:m_1e7}The mean absolute magnetization computed for $16$ different temperatures, with $10^6$ Monte Carlo cycles, for five different lattices. $N$ is the number of spins in one direction. The graph with $N=100$ is calculated with $10^7$ Monte Carlo cycles.}
+\end{center}
+\end{figure}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+With the data obtained we can now compute the critical temperature when the size of the system goes to infinity by use of Eq. (\ref{eq:propto_TC}), for $\nu = 1$. We use the $kT_C/J$'s from the 60x60- and 80x80-lattice. From Figure \ref{fig:cv_1e6} we can see that $kT_C(60)/J$ is about $2.275$, and that $kT_C(80)/J$ is about $2.260$. We insert the values in Eq. (\ref{eq:propto_TC}), and then have two equations with the unknowns $kT_C(\infty)/J$ and $a$. We solve for $a$ and finds that $a \simeq 3.6$, which gives us that $kT_C(\infty)/J\simeq 2.215$. The exact value is $kT_C/J \simeq 2.269$. This shows that our numerically calculated data gives a good approximation to a real system. The error in our calculated $kT_C(\infty)/J$ could have been reduces even more if we had computed the data for more values of $kT/J$ in the interval $kT/J = [.20,2.4]$. This is because it is somewhat hard to see where the actual values of $kT_C(60)/J$ and $kT_C(80)$ are. We did set a limit on $16$ values of $kT/J$ because the time it takes to execute a simulation grows fast with the number of $kT/J$ points. Another solution to this problem could have been to put some of the $16$ points closer together around the area where we know that $kT_C/J$ actually is, or simply decrease the interval $kT/J = [2.0,2.4]$.
 \newpage
 \section{Conclusion}
-
+From the results we got during this project we can conclude that simulations of spin system with limited sizes is a good approximation to how real spin systems behaves. The results have a pretty good accuracy, and with simple changes we can get results that are even better.
+\section{Comments}
+The code used in this project can be reached at\\ 
+\url{<https://github.com/marieggen/FYS3150/commits/master/projects/project_4>}. Because of parallelization of the code, the results from the first part of the project is not working. Because of that, if you are interested in looking at the code that gave the earlier results, I ask you to look at the code at commits that was done before the last commits.
 \section{References}
 \begin{enumerate}
 	\item Computational Physics - Lecture Notes Fall 2015, Morten Hjorth-Jensen, Department of Physics, University of Oslo
