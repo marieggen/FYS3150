@@ -77,25 +77,18 @@ void Metropolis(vec w, int nSpin, mat& s, double T, double& E, double& M,
 
 
 
-void numMeanValues(int N, double E, double M, vec& values,
-                   vec& P_E){
+void numMeanValues(double E, double M, vec& values){
     /*Find expectation values of energy,
     magnetization, specific heat capacity
     and susceptibility (numerical calc.)*/
     values(0) += E; values(1) += M;
     values(2) += E*E; values(3) += M*M;
     values(4) += abs(M);
-
-    //cout << E+800 << endl;
-    P_E(E + (2*N*N)) += 1;
-
     return;
 }
 
 
-vec outputValues(double T, int N, int MCc, vec& numValues,
-                 vec& Evariance, vec& Mvariance, int numMCC,
-                 vec& VarE, vec& VarM, int& num, vec& EvarianceValues){
+vec outputValues(double T, int N, int MCc, vec& numValues){
     double norm = 1.0/((double) MCc); //divide by tot. num. of cycles
     double perSpin = 1.0/((double) N*(double) N);
     double Eavg = numValues(0)*norm;
@@ -113,6 +106,7 @@ vec outputValues(double T, int N, int MCc, vec& numValues,
     outputValues(4) = absMavg*perSpin;//absMavg
     outputValues(5) = ((M2avg - absMavg*absMavg)/T)*perSpin;//absXavg
 
+<<<<<<< HEAD
 
 //    Evariance(numMCC) = outputValues(1)*(T*T);
 //    Mvariance(numMCC) = outputValues(3)*T;
@@ -129,6 +123,8 @@ vec outputValues(double T, int N, int MCc, vec& numValues,
 //        Mvariance.fill(0);
 //    }
 
+=======
+>>>>>>> parent of 874c528... d) almost done
     return outputValues;
 }
 
@@ -175,6 +171,43 @@ void WriteToFileT(ofstream &analyticalFile, ofstream &numericalFile, vec anaValu
     return;
 }
 
+void SaveAllValues(int N, int cycle, double T, vec& numValues, vec& meanE, vec& meanCv,
+                   vec& meanM, vec& meanX, vec& MC_cycles, double E, double M){
+    /*Saves the mean values from every monte
+     MC cycle into a matrix*/
+    numValues(0) += E; numValues(1) += M;
+    numValues(2) += E*E; numValues(3) += M*M;
+    numValues(4) += abs(M);
+
+    double norm = 1.0/((double) cycle); //divide by tot. num. of cycles
+    double perSpin = 1.0/((double) N*(double) N);
+    double Eavg = numValues(0)*norm;
+    double Mavg = numValues(1)*norm;
+    double E2avg = numValues(2)*norm;
+    double M2avg = numValues(3)*norm;
+    double absMavg = numValues(4)*norm;
+
+    meanE(cycle) = Eavg*perSpin;//Eavg
+    meanCv(cycle) = ((E2avg - Eavg*Eavg)/(T*T))*perSpin;//CVavg
+    meanM(cycle) = absMavg*perSpin;//absMavg
+    meanX(cycle) = ((M2avg - absMavg*absMavg)/T)*perSpin;//absXavg
+    MC_cycles(cycle) = cycle;
+    return;
+}
+
+void WriteToFileMCC(int MCC, ofstream &numericalFile, vec& meanE, vec& meanCv,
+                    vec& meanM, vec& meanX, vec& MC_cycles, vec count){
+    //Printed as: E, Cv, M, X, |M|, |X|, #MCC
+    for(int cycles=0 ; cycles<MCC ; cycles++){
+        numericalFile << setprecision(8) << meanE(cycles) << setw(25) <<
+                 meanCv(cycles) << setw(25) << meanM(cycles) <<
+                 setw(25) << meanX(cycles) << setw(25) <<
+                 MC_cycles(cycles) << setw(25) << count(cycles) << endl;
+    }
+
+    return;
+}
+
 
 void initializeSpin(double T, int N, mat& s, long& idum,
                     double& E, double& M){
@@ -210,6 +243,7 @@ void initializeSpin(double T, int N, mat& s, long& idum,
 
             }
         }
+<<<<<<< HEAD
     }
 
     return;
@@ -287,11 +321,27 @@ void ising(int N, int Tsteps, int MCCmax, int MCClimit,int my_rank,
             //print(anaValues, outputVales,T);
             WriteToFileT(analyticalFile,numericalFile,anaValues,outputVales,
                        T, MCC, count);
+=======
+   }
+
+    return;
+}
+
+
+
+
+
+
+
+
+
+>>>>>>> parent of 874c528... d) almost done
 
 //            MCC += MCCstep;
 //            numMCC += 1;
         }
 
+<<<<<<< HEAD
         T_count += 1;
     }
 
@@ -302,6 +352,13 @@ void ising(int N, int Tsteps, int MCCmax, int MCClimit,int my_rank,
 }
 
 
+=======
+
+
+
+
+
+>>>>>>> parent of 874c528... d) almost done
 
 
 

@@ -1,0 +1,1 @@
+function [] = graph(omega_r)
