@@ -8,10 +8,17 @@
 \usepackage[T1]{fontenc}
 \usepackage{hyperref}
 \usepackage{bbold}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{float}
+\captionsetup[subfigure]{labelformat = parens, labelsep = space, font = small}
+
 
 \begin{document}
 \title{FYS3150 - Project 5 - Diffusion of neurotransmitters in the synaptic cleft}
-\author{Vilde Flugsrud and Mari Dahl Eggen}
+\author{Vilde Flugsrud - Candidate number
+\\ Mari Dahl Eggen - Candidate number 5}
+
 \maketitle
 
 \newpage
@@ -22,11 +29,20 @@
 
 \begin{flushleft}
 \begin{abstract}
-hei
+In this project we are analyzing the quality of five numerical procedures for solving partial differential equations. The equation of interest is the diffusion equation, and the numerical methods we are testing are Forward Euler, Backward Euler, Crank-Nicolson, and Monte Carlo with and without importance sampling. We will see that
 \end{abstract}
 
 \section{Introduction}
+Neurotransmitters are information carrying molecules that are used in transport of signals between neurons in the brain. They are transported from a presynaptic cell to a postsynaptic cell, across a synaptic cleft, which is the small space that separates the cell membranes of the two cells. In Figure \ref{fig:cell} the cells and synaptic cleft are illustrated. In this project we are interested in how the neurotransmitters are moving across the synaptic cleft. We assume that they move due to diffusion, and will therefore solve the diffusion equation to figure out how the system evolves with time. The diffusion equation is a partial differential equation, and it exists many numerical methods for solving it. The equation is in this case also analytically solvable, which makes it easy to analyze the quality of the numerical methods. In this project we will test five different numerical methods, and compare the results from each, to determine which of the methods is the best.  
 
+\begin{figure}[!h]
+\begin{center}
+\includegraphics[scale=0.35]{cell2}
+\caption{\label{fig:cell}Illustration of how the presynaptic and postsynaptic cell are lying against each other, when the presynaptic cell are sending signals to the postsynaptic cell through the synaptic cleft. The synaptic cleft is the small space between the cell membranes. (From task text for project 5 (edited).)}
+\end{center}
+\end{figure}
+
+\newpage
 \section{Theory}
 \subsection{Analytical solution of the diffusion equation\label{sect:analytical_solution}}
 We will now find a closed-form solution of the diffusion equation in one dimension, where the diffusion constant is set to $D = 1$, so the partial differential equation to solve is 
@@ -291,7 +307,7 @@ U_j = (2\mathbb{1} + \alpha\hat{B})^{-1}(2\mathbb{1} - \alpha\hat{B})U_{j-1},
 \vspace{5mm}
 where $U_j$, $U_{j-1}$ and $\hat{B}$ is given in Eq. (\ref{eq:bkward_Euler_B}) and $\mathbb{1}$ is the identity matrix. We need to solve this matrix equation to find our unknown points. 
 
-\subsection{Truncation errors}
+\subsection{Truncation errors\label{sect:truncation_error}}
 The basic idea behind Forward Euler, Backward Euler and Crank-Nicolson scheme is to advance a solution at point $u(x_i,t_j)$, to a solution at point $u(x_{i+1},t_{j+1})$. This three methods stems from the linear Taylor polynomial
 
 \vspace{5mm}
@@ -464,28 +480,18 @@ $$(ii): 2\alpha(1+\cos(\pi))>0 \quad\Rightarrow\quad 4\alpha > 0 \quad\Rightarro
 We always have that $\alpha = \frac{\Delta t}{\Delta x^2}>0$, because the step lengths always are defined to be positive. Then it is easy to see that $(i)$ always is fulfilled. The expression in $(ii)$
 indicates that $0>0$, but this is never going to be the case since $\theta_k$ never is going to reach the value $\pi$ exactly, it will just approach $\pi$, so we will always have that $\cos(\theta_k)<1$. This means that $(ii)$ always is fulfilled as well, and we can conclude that the Crank-Nicolson scheme do not have any restrictions, which means that the system always will reach a steady state.
 
-\newpage
-
 \section{Method}
 \subsection{Simulation of diffusion of neurotransmitters}
-Neurotransmitters are information carrying molecules that are used in transport of signals between neurons in the brain. They are transported from a presynaptic cell to a postsynaptic cell, across a synaptic cleft, which is the small space that separates the cell membranes of the two cells. In Figure \ref{fig:cell} the cells and synaptic cleft are illustrated. The transport process of the neurotransmitters in the synaptic cleft is governed by diffusion, and can therefore be described mathematically by the diffusion equation
+The transport process of the neurotransmitters in the synaptic cleft is governed by diffusion, and can therefore be described mathematically by the diffusion equation
 
 \vspace{5mm}
 $$D\nabla^2u = \frac{\partial u}{\partial t}$$\\
 \vspace{5mm}
 
-where $u$ is the concentration of particular neurotransmitters, and $D$ is the diffusion constant in this particular synaptic cleft.
-\begin{figure}[!h]
-\begin{center}
-\includegraphics[scale=0.5]{cell.png}
-\caption{\label{fig:cell}Illustration of how the presynaptic and postsynaptic cell are lying against each other, when the presynaptic cell are sending signals to the postsynaptic cell through the synaptic cleft. The synaptic cleft is the small space between the cell membranes. (From task text for project 5.)}
-\end{center}
-\end{figure}
-
-To simplify the problem we assume that the presynaptic cell releases the neurotransmitters roughly at the same time along its membrane, and that the whole synaptic cleft has approximately the same width everywhere. Then, because the area of the synaptic cleft is so large compared to its width, we can assume that the neurotransmitter concentration only varies in the direction from the presynaptic cell to the postsynaptic cell. This gives us the opportunity to look at the problem in only one spatial direction. We choose the direction from the presynaptic cell to the postsynaptic cell to be the x-direction, and the diffusion equation reduces to
-
-\vspace{5mm}
-$$D\frac{\partial^2 u}{\partial x^2} = \frac{\partial u}{\partial t}.$$\\
+where $u$ is the concentration of particular neurotransmitters, and $D$ is the diffusion constant in this particular synaptic cleft. To simplify the problem we assume that the presynaptic cell releases the neurotransmitters roughly at the same time along its membrane, and that the whole synaptic cleft has approximately the same width everywhere. Then, because the area of the synaptic cleft is so large compared to its width, we can assume that the neurotransmitter concentration only varies in the direction from the presynaptic cell to the postsynaptic cell. This gives us the opportunity to look at the problem in only one spatial direction. We choose the direction from the presynaptic cell to the postsynaptic cell to be the x-direction, and the diffusion equation reduces to
+\begin{equation}\label{eq:diffusion_equation}
+D\frac{\partial^2 u}{\partial x^2} = \frac{\partial u}{\partial t}.
+\end{equation}\\
 \vspace{5mm}
 
 The simplified system is shown in Figure \ref{fig:cleft_model}, and we see that the neurotransmitters are released from the presynaptic cell at $x=0$, and absorbed by the postsynaptic cell at $x = d$.
@@ -498,6 +504,7 @@ The simplified system is shown in Figure \ref{fig:cleft_model}, and we see that 
 \end{figure}
 
 \subsection{Implementation of algorithms}
+The diffusion equation (\ref{eq:diffusion_equation}) can be solved in several ways, and in this project we are solving it with five different methods. In this section the implementation of the five methods is explained.
 \subsubsection{Forward Euler}
 \subsubsection{Backward Euler}
 \subsubsection{Crank-Nicolson}
@@ -510,15 +517,12 @@ To be sure that the results we get from our numerical calculations are correct, 
 \subsubsection{Unit tests in Forward Euler, Backward Euler and the Crank-Nicolson scheme}
 In \ref{sect:eigvals_backwrd_Euler}, \ref{sect:eigvals_forwrd_Euler} and \ref{sect:eigvals_Crank-Nicolson} we were looking for restrictions on the step lengths in time and space, from the restriction in Eq. (\ref{eq:restriction_spectral_radius}). The restriction says that the absolute value of the maximum eigenvalue of the coefficient matrix in the algorithm have to be smaller that one, for the system to reach a steady state. We found that it was only the Forward Euler method that needed a restriction on the step length, namely $\Delta t < \frac{\Delta x^2}{2}$. This restriction was used as a unit test in the algorithm of Forward Euler.\\
 \vspace{5mm}
-We also had to find a way to test the two other methods. We showed that there was no restrictions on the step lengths for these, and this result came from the fact that the coefficient matrix of their algorithm do not have any eigenvalues with absolute value bigger that or equal to one. We used this fact to check if the restriction in Eq. (\ref{eq:restriction_spectral_radius}) always was fulfilled. That is, we find the eigenvalues of the coefficient matrices numerically, and make sure that the absolute value of the matrices are less than one. This unit test was also used on the Forward Euler method, to make sure that the restriction we found on the step length was right. 
+We also had to find a way to test the two other methods. We showed analytically that there was no restrictions on the step lengths for these, and this result came from the fact that the coefficient matrix of their algorithm do not have any eigenvalues with absolute value bigger that or equal to one. To double check that this is the case we find the eigenvalues of the coefficient matrices numerically, and make sure that the absolute value of all the eigenvalues of the matrices are less than one. This unit test was also used on the Forward Euler method, to make sure that the restriction we found on the step length was right. 
 
 \subsubsection{Verification of results}
 In \ref{sect:analytical_solution} we found the analytical solution of the diffusion equation that we are looking  at in this project. All the numerical methods that we are using in this project are supposed to give us the same answers, namely the answers that the analytically calculated solution gives. If we compare the results from the numerical methods with the results from the analytical solution, this is a verification of that the numerical calculated results are correct. We can also use the results from the analytical solution to find the relative error in the results from the numerical methods.
 
 
-
-
-\newpage
 \section{Result and discussion}
 \subsection{Truncation error and stability properties}
 
@@ -538,40 +542,39 @@ In \ref{sect:analytical_solution} we found the analytical solution of the diffus
 \end{table}
 
 \subsection{Numerical calculated results}
-In Figure \ref{fig:forward_Euler_u}, \ref{fig:backward_Euler_u} and \ref{fig:Crank_Nicolson_u} we can see the density per x-position of a particular type of transmitters, graphed as function of position in in the synaptic cleft. As anticipated the transmitters will spread out from the presynaptic cell, which is the start point, against the postsynaptic cell, which is the end point. At small times, for example at $T = 0.001$, we can see that there is no transmitters in most of the synaptic cleft. As time goes, the system is approaching equilibrium, and we can see that equilibrium is reached at $T = 0.3$. From these figures it is impossible to see the difference in the precision of the three methods.
-
+In Figure \ref{fig:forward_Euler_u}, \ref{fig:backward_Euler_u} and \ref{fig:Crank_Nicolson_u} we can see the density per x-position of a particular type of transmitters, graphed as function of position in in the synaptic cleft. As anticipated the transmitters will spread out from the presynaptic cell, which is the start point, against the postsynaptic cell, which is the end point. At small times, for example at $T = 0.001$, we can see that there is no transmitters in most of the synaptic cleft. As time goes, the system is approaching equilibrium, and we can see that equilibrium is reached at $T = 0.3$. From these figures it is almost impossible to see the difference in the precision of the three methods.
 
 \begin{figure}[!h]
 \begin{center}
-\includegraphics[scale=0.35]{EF_Nt5000_Nx200}
+\includegraphics[scale=0.4]{EF_Nt5000_Nx200}
 \caption{\label{fig:forward_Euler_u}The concentration of neurotransmitters as a function of position in the synapitc cleft for four different points in time. This results is computed by use of the Forward Euler method. Nt is the number of time steps and Nx is the number of step length.}
 \end{center}
 \end{figure}
 
 \begin{figure}[!h]
-\begin{center}
-\begin{minipage}[b]{0.45\linewidth}
-	\includegraphics[scale=0.29]{EF_Nt5000_Nx200}
-  \caption{\label{fig:backward_Euler_u}The concentration of neurotransmitters as a function of position in the synapitc cleft for four different points in time. This results is computed by use of the Backward Euler method. Nt is the number of time steps and Nx is the number of step length.}
-\end{minipage}
-\quad
-\begin{minipage}[b]{0.45\linewidth}
-	\includegraphics[scale=0.29]{CN_Nt5000_Nx200}
-  \caption{\label{fig:Crank_Nicolson_u}The concentration of neurotransmitters as a function of position in the synapitc cleft for four different points in time. This results is computed by use of the Crank Nicolson scheme. Nt is the number of time steps and Nx is the number of step length.}
-\end{minipage}
-\end{center}
+  \begin{minipage}{\linewidth}
+    \centering
+    \subcaptionbox{\label{fig:backward_Euler_u}Calculated with Backward Euler.}
+    {\includegraphics[scale=0.27]{EB_Nt5000_Nx200}}
+    \subcaptionbox{\label{fig:Crank_Nicolson_u}Calculated with Crank Nicolson.}
+     {\includegraphics[scale=0.27]{CN_Nt5000_Nx200}}
+    \caption{The concentration of neurotransmitters as a function of position in the synapitc cleft for four different points in time. These results are computed by use of the Backward Euler method and the Crank Nicolson scheme. Nt is the number of time steps and Nx is the number of step lengths.}
+  \end{minipage}
 \end{figure}
 
-
-
-
 \newpage
-\subsection{Relative error in numerical calculated results}
+\subsection{Error in numerical calculated results}
+\subsubsection{Relative and absolute global error.}
+We know from section \ref{sect:truncation_error} that the spatial local error in the three methods Forward Euler, Backward Euler and Crank Nicolson, are of magnitude $\mathcal{O}(\Delta x^2)$. Although the magnitude of the local error is the same in the three methods, the global error can accumulate to be quite different. We also know that the order of the local error in time is smaller for Crank Nicolson, something that will make the global error less for that method. In Figure \ref{fig:rel_error_all} and \ref{fig:abs_error_all} we can see the relative and absolute error for the three methods, where the absolute error is the absolute value of the difference between the numerically and analytically calculated data. As we would expect, the relative error is linear. This is because we add the same amount of local error in every time step of the algorithm. We can see that the graphs stop to grow when $x$ is approaching $1.0$. This happens most likely because we have made the boundary condition that the density of transmitters is zero in $x=0$. The absolute error is behaving the way we would expect. It starts out in zero because we know the value at the start point, and ends up in zero because we know the value at the endpoint. This results in that the absolute errors are biggest in the middle of the spatial interval.
 \begin{figure}[!h]
-\begin{center}
-\includegraphics[scale=0.7]{RelErrEFET0p5Nt5000Nx200.png}
-\caption{\label{fig:forward_Euler_error}This graph shows how the relative error of data computed by use of the Forward Euler method, changes with position.}
-\end{center}
+  \begin{minipage}{\linewidth}
+    \centering
+    \subcaptionbox{\label{fig:rel_error_all}Relative error.}
+    {\includegraphics[scale=0.27]{rel_error_all}}
+    \subcaptionbox{\label{fig:abs_error_all}Absolute error.}
+     {\includegraphics[scale=0.27]{abs_error_all}}
+    \caption{The global relative error and the global absolute error of the numerically calculated data, graphed as a function of position in the synaptic cleft. The data are computed by use of Forward Euler method, Backward Euler method and the Crank Nicolson scheme.}
+  \end{minipage}
 \end{figure}
 
 Plot where restriction is not met\\
@@ -579,8 +582,8 @@ Plot where restriction is not met\\
 - Flattens out in top
 - Why is the error much less than our calculated error?
 - Why does not the global error of t increase?
-\subsection{Crank-Nicolson scheme}
 
+\newpage
 \section{Conclusion}
 
 \section{Comments}
