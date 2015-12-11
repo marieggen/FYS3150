@@ -1,5 +1,5 @@
 \documentclass[12pt]{article}
-\usepackage[top=3cm, bottom=3cm, right=3cm, left=3cm]{geometry}
+\usepackage[top=2cm, bottom=3cm, right=3cm, left=3cm]{geometry}
 \usepackage{graphicx}
 \usepackage{amsmath}
 \usepackage{ulem}
@@ -12,11 +12,38 @@
 \usepackage{subcaption}
 \usepackage{float}
 \captionsetup[subfigure]{labelformat = parens, labelsep = space, font = small}
+\usepackage{verbatim}
+\usepackage{listings}
+\usepackage{a4wide}
+\usepackage{color}
+\usepackage{amssymb}
+\usepackage[dvips]{epsfig}
+\usepackage[T1]{fontenc}
+\usepackage{cite} % [2,3,4] --> [2--4]
+\usepackage{shadow}
+\usepackage{hyperref}
+
+\setcounter{tocdepth}{2}
+
+\lstset{language=c++}
+\lstset{alsolanguage=[90]Fortran}
+\lstset{basicstyle=\small}
+\lstset{backgroundcolor=\color{white}}
+\lstset{frame=single}
+\lstset{stringstyle=\ttfamily}
+\lstset{keywordstyle=\color{red}\bfseries}
+\lstset{commentstyle=\itshape\color{blue}}
+\lstset{showspaces=false}
+\lstset{showstringspaces=false}
+\lstset{showtabs=false}
+\lstset{breaklines}
 
 
 \begin{document}
-\title{FYS3150 - Project 5 - Diffusion of neurotransmitters in the synaptic cleft}
-\author{Vilde Flugsrud - Candidate number
+\title{Diffusion of neurotransmitters in the synaptic cleft \\
+\vspace{5mm}
+FYS3150 - Project 5}
+\author{Vilde Flugsrud - Candidate number 7
 \\ Mari Dahl Eggen - Candidate number 5}
 
 \maketitle
@@ -29,7 +56,7 @@
 
 \begin{flushleft}
 \begin{abstract}
-In this project we are analyzing the quality of five numerical procedures for solving partial differential equations. The equation of interest is the diffusion equation, and the numerical methods we are testing are Forward Euler, Backward Euler, Crank-Nicolson, and Monte Carlo with and without importance sampling. We will see that
+In this project we are analyzing the quality of five numerical procedures for solving partial differential equations. The equation of interest is the diffusion equation, and the numerical methods we are testing are Forward Euler, Backward Euler, Crank-Nicolson, and two different Monte Carlo simulation approaches. We will see that the Crank-Nicolson scheme gives the best results, and that the Monte Carlo simulations of partial differential equations in one dimension gives a rather poor accuracy.
 \end{abstract}
 
 \section{Introduction}
@@ -37,7 +64,7 @@ Neurotransmitters are information carrying molecules that are used in transport 
 
 \begin{figure}[!h]
 \begin{center}
-\includegraphics[scale=0.35]{cell2}
+\includegraphics[scale=0.33]{cell2}
 \caption{\label{fig:cell}Illustration of how the presynaptic and postsynaptic cell are lying against each other, when the presynaptic cell are sending signals to the postsynaptic cell through the synaptic cleft. The synaptic cleft is the small space between the cell membranes. (From task text for project 5 (edited).)}
 \end{center}
 \end{figure}
@@ -240,7 +267,9 @@ $$\frac{u_i^{j}-u_i^{j-1}}{\Delta t} = \frac{u_{i+1}^j-2u_i^j+u_{i-1}^j}{\Delta 
 where $\alpha = \frac{\Delta t}{\Delta x^2}$. This equation can be represented as a matrix equation on the form 
 
 \vspace{5mm}
-$$U_{j-1} = \hat{A}U_{j} = (\mathbb{1}+\alpha\hat{B})U_j,$$\\
+\begin{equation}\label{eq:implicit_form_Euler}
+U_{j-1} = \hat{A}U_{j} = (\mathbb{1}+\alpha\hat{B})U_j,
+\end{equation}
 where
 \vspace{5mm}
 \begin{equation}\label{eq:bkward_Euler_B}
@@ -307,6 +336,39 @@ U_j = (2\mathbb{1} + \alpha\hat{B})^{-1}(2\mathbb{1} - \alpha\hat{B})U_{j-1},
 \vspace{5mm}
 where $U_j$, $U_{j-1}$ and $\hat{B}$ is given in Eq. (\ref{eq:bkward_Euler_B}) and $\mathbb{1}$ is the identity matrix. We need to solve this matrix equation to find our unknown points. 
 
+\subsubsection{Monte Carlo Theory}
+The second approach to our problem is a Monte Carlo simulation with random walks. This is a method closely related to diffusion
+for the following reasons.
+The framework of random
+walks allows for a microscopic description of Brownian motion.
+Brownian motion is the behavior exhibited by small fractions of any system when exposed to random fluctuations of the
+medium - generally it is the random movement of particles. Diffusion can be the behavior of a large number of particles
+subjected to Brownian motion.
+While the behavior may be truly random at the microscopic level of each particle, the behavior at the macroscopic level of the system
+becomes seemingly deterministic. This is because macroscopic system states which are only obtained from certain combinations of particle movements
+become infinitesimally unlikely compared to system states that are possible results of various different motions of the particles.
+This is equivalent to the fact that entropy increases. Diffusion results from the overwhelming probability of
+movement towards lower concentration.\\
+\vspace{5mm}
+In our case the diffusing particles are the neurotransmitters navigating the synaptic cleft.
+This leads to the idea of achieving a simulation of the diffusion process by
+modeling the neurotransmitters with random walkers.
+A Markov process is a simple random walk in that two conditions for the microscopic movements are met
+- ergodicity and detailed balance, assuming there is an equal probability for every microscopic motion and that the probabiltity
+is also equal to that of the reverse motion, respectively.
+\vspace{5mm}
+Underlining the close link between Markov chains and diffusion is the fact that the discretized diffusion equation can be derived
+from a Markov process. Or stated differently, a Markov process yields in the limit of infinitely many steps of the
+diffusion equation. \cite{kompendium_hjorth}
+
+It can be shown that for the diffusion process the root mean square displacement
+after a time $\Delta t$ is\\
+\begin{align}
+    \sqrt{\langle x^2\rangle - \langle x\rangle^2} = \sqrt{2D\Delta t}.
+\end{align}\\
+\vspace{5mm}
+We will implement this as our step length $l_0$ when developing the algorithm.
+
 \subsection{Truncation errors\label{sect:truncation_error}}
 The basic idea behind Forward Euler, Backward Euler and Crank-Nicolson scheme is to advance a solution at point $u(x_i,t_j)$, to a solution at point $u(x_{i+1},t_{j+1})$. This three methods stems from the linear Taylor polynomial
 
@@ -347,6 +409,7 @@ When it comes to the local truncation error in space we see that Eq. (\ref{eq:ba
 
 \subsubsection{Crank-Nicolson scheme}
 The derivation of the local truncation error in space and time for the Crank-Nicolson scheme is equivalent to the derivations we did in the two previous sections, but with some more calculations, that we pass in this project. The derivation can be seen in REF... It appears that the biggest error term in Eq. (\ref{eq:Cranc_Nicolson_time}) is $\mathcal{O}(\Delta t^2)$, and $\mathcal{O}(\Delta x^2)$ in Eq. (\ref{eq:Cranc_Nicolson_space}).
+\newpage
 \subsection{Stability properties\label{sect:stability_properties}}
 We can investigate the stability properties of Forward Euler, Backward Euler and Crank-Nicolson scheme by use of the spectral radius of the coefficient matrix for each of the algorithms. The spectral radius is given by
 
@@ -378,7 +441,7 @@ we have that $\lambda_{\hat{A}^{-1}} = \frac{1}{\lambda_{\hat{A}}}$, so the easi
 \end{equation}
 \vspace{5mm}
 
-where $\lambda_{\mathbb{1}} = 1$ are the eigenvalues of the identity matrix and $\lambda_{\hat{B}}$ are the eigenvalues of $\hat{B}$, a matrix which can be seen in Eq. (\ref{eq:bkward_Euler_B}). $\hat{B}$ is tridiagonal and Toeplitz, which means that the eigenvalues has a closed form solution (REF...)
+where $\lambda_{\mathbb{1}} = 1$ are the eigenvalues of the identity matrix and $\lambda_{\hat{B}}$ are the eigenvalues of $\hat{B}$, a matrix which can be seen in Eq. (\ref{eq:bkward_Euler_B}). $\hat{B}$ is tridiagonal and Toeplitz, which means that the eigenvalues has a closed form solution \cite{tridiag_matrix}, \cite{toeplitz_matrix}
 
 \vspace{5mm}
 $$\lambda_k = a + 2\sqrt{bc}\cos\left(\frac{k\pi}{n+1}\right),\quad \text{for}\quad k=1,\dots ,n,$$\\
@@ -504,13 +567,122 @@ The simplified system is shown in Figure \ref{fig:cleft_model}, and we see that 
 \end{figure}
 
 \subsection{Implementation of algorithms}
-The diffusion equation (\ref{eq:diffusion_equation}) can be solved in several ways, and in this project we are solving it with five different methods. In this section the implementation of the five methods is explained.
+The diffusion equation (\ref{eq:diffusion_equation}) can be solved in several ways, and in this project we are solving it with five different methods. In this section the implementation of the five methods is explained. In the implementation of the following three methods we used the substitution $v(x, t) = u(x, t) - u_s(x,t)$ outlined in the theory section. This simplifies the initial condition to Eq. (\ref{eq:initial_cond_v}) and the boundary
+conditions to Eq. (\ref{eq:boundary_cond_v}).
 \subsubsection{Forward Euler}
+This algorithm has a simple implementation as $v_{i}^{j+1}$ is explicitly given by Eq. (\ref{eq:explicit_Euler_unknown}).
+We compute the new distribution at every time step $j$ with the code
+\begin{lstlisting}
+for (int i=1; i<Nx; i++) {
+    v(i) = alpha*v_prev(i-1) + (1-2*alpha)*v_prev(i) + alpha*v_prev(i+1);
+}
+\end{lstlisting}
 \subsubsection{Backward Euler}
-\subsubsection{Crank-Nicolson}
-\subsubsection{Monte Carlo methods and random walks}
-We are considering a problem in one dimension, where we are looking at the displacement of neurotransmitters in a synaptic cleft. A random walk in its simplest form would be that a transmitter have $50\%$ chance to move to the left, and $50\%$ chance to move to the right. All the transmitters moves a given step length every time step. If this simulation is run long enough, the system will reach its most probable state. 
+As described in the theory section we find the solution by solving the matrix
+Eq. (\ref{eq:implicit_form_Euler}) at every time step $j$. As seen the solution is given implicitly, but
+rather than inverting the matrix we solve it on the form $(\mathbb{1}+\alpha\hat{B})V_{j} = V_{j-1}$
+with Gaussian elimination using row operations.
+The simple form of the three diagonal matrix means that the row operations are fairly easily implemented.
+The lower non-diagonals $a=-\alpha$ turn out zero while the upper non-diagonals $c=-\alpha$ are unchanged. 
+The diagonals $b = 1 + 2\alpha$ and the right hand side $v_i^{j-1}$ are changed accordingly:
+\vspace{5mm}
+\begin{align*}
+b_{i_{new}} = b - \frac{a \cdot c}{b_{{i-1}_{new}}}\quad\text{and}\quad
+v_{i_{new}}^{j-1} = v_i^{j-1} - \frac{a\cdot v_{{i-1}_{new}}^{j-1}}{b_{{i-1}_{new}}},
+\end{align*}
+\vspace{5mm}
 
+
+where $new$ signifies the value after a row operation. This constitutes the forward substitution.
+These lines are implemented in the code as
+\begin{lstlisting}
+// Forward substitution
+v_prev_rowoperated(1) = v_prev(1);
+b_rowoperated(1) = b;
+for (int i=2; i<Nx; i++) {
+    b_rowoperated(i) = b - ac/b_rowoperated(i-1);
+    v_prev_rowoperated(i) = v_prev(i) - a_c*v_prev_rowoperated(i-1)/b_rowoperated(i-1);
+}
+\end{lstlisting}
+
+The backward substitution to finally obtain $v_i^{j}$ is completed by computing
+\vspace{5mm}
+\begin{align*}
+    v_{i}^{j} & = \frac{v_{i_{new}}^{j-1} - c\cdot v_{i+1}^{j}}{b_{i_{new}}},
+\end{align*} 
+\vspace{5mm}
+
+which is implemented in the code as
+\begin{lstlisting}
+// Backward substitution
+v(Nx-1) = v_prev_rowoperated(Nx-1)/b_rowoperated(Nx-1);
+for (int i=Nx-2; i>0; i--) {
+    v(i) = (v_prev_rowoperated(i)-a_c*v(i+1))/b_rowoperated(i);
+}           
+\end{lstlisting}
+
+These computations are done in a loop iterating over every time step $j$
+to obtain the final vector $V_{N_t} = v(x, t=T)$.
+
+\subsubsection{Crank-Nicolson}
+From Eq. (\ref{eq:crank-nicolson_matrix}) we have that
+\begin{align*}
+    (2\mathbb{1}+\alpha\hat{B})V_j &= (2\mathbb{1}-\alpha\hat{B})V_{j-1}.
+\end{align*}\\
+\vspace{5mm}
+Thus $V_j$ can be obtained by first computing the vector on the right hand
+side and solving the resulting linear equations problem.
+This is explicitly given and so the method from the Forward Euler
+procedure can be applied here. After this we are left with an implicit problem
+similar to the Backward Euler method and we solve it by the same procedure
+of Gaussian elimination. At each time step $j$ we then have a two step
+procedure combining the code from Forward and Backward Euler.
+
+\subsubsection{Monte Carlo simulation with discrete positions}
+In the first implementation of the Monte Carlo scheme the set of possible
+particle positions is discretized. The particles move with a
+constant step length
+$l_0 = \sqrt{2D\Delta t}$ with equal probability for moving left and right.\\
+\vspace{5mm}
+The algorithm is implemented as two for loops. The outer loop iterates over
+the given number of Monte Carlo cycles, each cycle representing a new particle.
+The inner loop iterates over the given number of time steps. Thus it simulates
+a random walk for each particle, moving either left or right at every time step.
+If the particle moves outside the synaptic cleft the loop breaks. This accounts
+for the boundary conditions.
+While the result is an array representing the concentration of neurotransmitters
+at a final time $T$, we count the transmitter's position at every time step.
+This is meant as a computationally efficient way of accounting for the constant
+stream of new transmitters released into the cleft. The transmitter's movement
+at a time earlier than $T$ might well represent the movement of a transmitter
+that entered the cleft at a later time. The code for the random walk loop
+is as follows
+\begin{lstlisting}
+for (double time = dt; time <= T; time+=dt) {
+    if (ran0(&idum) <= move_prob) { // move to the right
+        pos_index += 1;                
+        // if it has reached the end, stop counting it
+        if (pos_index >= Nx) break;
+    } else {                        // move to the left
+        pos_index -= 1;
+        // if it has returned to start, stop counting it
+        if (pos_index <=0) break;
+    }
+    // count the particle's position
+    pos_count(pos_index) += 1;
+}
+\end{lstlisting}
+
+\subsubsection{Monte Carlo simulation with continuous positions}
+This method implements the Monte Carlo scheme with a continuous set of positions.
+This is done by changing the step length to $l_0=\xi \sqrt{2D\Delta t}$ where $\xi$
+is a random number chosen from a Gaussian distribution with mean value 0 and standard
+deviation 1. See the code for the implementation. The initial positions of the particles
+are given by a randomly distributed position within the first interval, as opposed to them
+initially being set to 0. There exists some alternative approaches here, such as initiating
+the particles at an interval left of zero, or in a small interval centered at zero.
+The initial condition is given as the Dirac delta function and it is suggested that the problem
+is how to represent this well at continuous values.
 
 \subsection{Unit tests and verification of results}
 To be sure that the results we get from our numerical calculations are correct, it is necessary to include some tests in the code. If there is some of the pre calculations in the algorithm that we know the answer of, or if there is some restrictions on the pre calculations, these are the parts we want to check with tests.
@@ -541,8 +713,8 @@ In \ref{sect:analytical_solution} we found the analytical solution of the diffus
 \caption{\label{tab:error_stability}This table lists the order of the local truncation error in space and time for three numerical methods. It also lists the requirements on the step lengths in space and time, to ensure that the numerical methods produce stable results.}
 \end{table}
 
-\subsection{Numerical calculated results}
-In Figure \ref{fig:forward_Euler_u}, \ref{fig:backward_Euler_u} and \ref{fig:Crank_Nicolson_u} we can see the density per x-position of a particular type of transmitters, graphed as function of position in in the synaptic cleft. As anticipated the transmitters will spread out from the presynaptic cell, which is the start point, against the postsynaptic cell, which is the end point. At small times, for example at $T = 0.001$, we can see that there is no transmitters in most of the synaptic cleft. As time goes, the system is approaching equilibrium, and we can see that equilibrium is reached at $T = 0.3$. From these figures it is almost impossible to see the difference in the precision of the three methods.
+\subsection{Numerical calculated results\label{sect:numerical_results}}
+In this section we are studying the density of a particular type of transmitters, graphed as a function of position in the synaptic cleft. As anticipated the transmitters will spread out from the presynaptic cell, which is the start point, against the postsynaptic cell, which is the end point. This is the work of diffusion. At small times, for example at $T = 0.001$, we can see that there is no transmitters in most of the synaptic cleft. As time goes, the system is approaching equilibrium, and we can see that equilibrium is reached at $T = 0.3$. 
 
 \begin{figure}[!h]
 \begin{center}
@@ -558,43 +730,99 @@ In Figure \ref{fig:forward_Euler_u}, \ref{fig:backward_Euler_u} and \ref{fig:Cra
     {\includegraphics[scale=0.27]{EB_Nt5000_Nx200}}
     \subcaptionbox{\label{fig:Crank_Nicolson_u}Calculated with Crank Nicolson.}
      {\includegraphics[scale=0.27]{CN_Nt5000_Nx200}}
-    \caption{The concentration of neurotransmitters as a function of position in the synapitc cleft for four different points in time. These results are computed by use of the Backward Euler method and the Crank Nicolson scheme. Nt is the number of time steps and Nx is the number of step lengths.}
+  \end{minipage}\\
+
+    \begin{minipage}{\linewidth}
+    \centering
+    \subcaptionbox{\label{fig:MC_plot}Calculated with brute force Monte Carlo simulation with constant discretized step length.}
+    {\includegraphics[scale=0.27]{MC}}
+    \subcaptionbox{\label{fig:MC_importence}Calculated with brute force Monte Carlo with continuous step length drawn from the Gaussian distribution.}
+     {\includegraphics[scale=0.27]{MC_importance}}
+    \caption{The concentration of neurotransmitters as a function of position in the synapitc cleft for four different points in time. These results are computed by use of the Backward Euler method, Crank Nicolson scheme, brute force Monte Carlo and Monte Carlo with importance sampling. The Gaussian distribution is used in the importance sampling, as the neurotransmitters step length. $N_t$ is the number of time steps, $N_x$ is the number of step lengths, $N_{MC}$ is the number of Monte Carlo cycles and $l_0$ is the constant step length of the neurotransmitters.}
   \end{minipage}
 \end{figure}
+
+
+Figure \ref{fig:forward_Euler_u}, \ref{fig:backward_Euler_u} and \ref{fig:Crank_Nicolson_u} shows the results from Forward Euler, Backward Euler and Crank-Nicolson. We can see that it is almost impossible to see the difference in the precision of the three methods from these plots. Figure \ref{fig:MC_plot} and \ref{fig:MC_importence} shows the results from brute force Monte Carlo simulation respectively without and with Gaussian step lengths. Here it is more easy to pick out some differences between the plots. In Figure \ref{fig:MC_plot} we can spot some irregularities in the graph for $T=0.001$, these are not present in Figure \ref{fig:MC_importence}. A final remark is that the Monte Carlo simulation with constant step length produces results that in first sight looks like the results from Crank-Nicolson and Forward and Backward Euler. This is in contrast to the results made by the Monte Carlo simulation with step lengths drawn from the Gaussian distribution. In Figure \ref{fig:MC_importence} we can see that all the graphs have correct behavior in most parts, but that the density values seems to be a little too small all over. We also see that they have an odd behavior in the start of the x-interval, and in Figure \ref{fig:MC_importance_zoom} we can see this area zoomed in. The data are scaled so that the value in the initial position is equal to $1$. In Figure \ref{fig:MC_hist} we can see the points that makes up the graph at $T=0.3$. It is obvious that the three first points shows some instability, and that the following points follows the expected behavior. From this we can conclude that the density in the initial position is uncorrect, which leads to that the scaling done on all the data is incorrect.
+
+\begin{figure}[!h]
+  \begin{minipage}{\linewidth}
+    \centering
+    \subcaptionbox{\label{fig:MC_importance_zoom}All graphs.}
+    {\includegraphics[scale=0.27]{MC_importance_zoom}}
+    \subcaptionbox{\label{fig:MC_hist}Points from graph $T = 0.3$ (equilibrium).}
+     {\includegraphics[scale=0.27]{hist}}
+    \caption{Figure \ref{fig:MC_importence} zoomed in at top left corner.}
+  \end{minipage}
+\end{figure}
+
 
 \newpage
 \subsection{Error in numerical calculated results}
 \subsubsection{Relative and absolute global error.}
-We know from section \ref{sect:truncation_error} that the spatial local error in the three methods Forward Euler, Backward Euler and Crank Nicolson, are of magnitude $\mathcal{O}(\Delta x^2)$. Although the magnitude of the local error is the same in the three methods, the global error can accumulate to be quite different. We also know that the order of the local error in time is smaller for Crank Nicolson, something that will make the global error less for that method. In Figure \ref{fig:rel_error_all} and \ref{fig:abs_error_all} we can see the relative and absolute error for the three methods, where the absolute error is the absolute value of the difference between the numerically and analytically calculated data. As we would expect, the relative error is linear. This is because we add the same amount of local error in every time step of the algorithm. We can see that the graphs stop to grow when $x$ is approaching $1.0$. This happens most likely because we have made the boundary condition that the density of transmitters is zero in $x=0$. The absolute error is behaving the way we would expect. It starts out in zero because we know the value at the start point, and ends up in zero because we know the value at the endpoint. This results in that the absolute errors are biggest in the middle of the spatial interval.
+We know from section \ref{sect:truncation_error} that the spatial local error in the three methods Forward Euler, Backward Euler and Crank Nicolson, are of magnitude $\mathcal{O}(\Delta x^2)$. Although the magnitude of the local error is the same in the three methods, the global error can accumulate to be quite different. We also know that the order of the local error in time is smaller for Crank Nicolson, something that will make the global error less for that method. In Figure \ref{fig:rel_error_all} we can see the relative error for the three methods. As we would expect, the relative error is linear. This is because we add the same amount of local error in every time step of the algorithm. We can see that the graphs stop to grow when $x$ is approaching $1.0$. This is a consequence of that we have boundary conditions in initial and final position. This fact is easier to realize if we take a look at the absolute error, which is the absolute value of the difference between the numerically and analytically calculated data. The absolute error for the three methods is graphed for two different times each in Figure \ref{fig:abs_error_all}. We see that it is approaching zero in the initial and final position, just as expected, because we have fixed the known values of the boundaries in these positions. This again leads to a maximum relative error in the midpoint position, because the calculated density $u^{i}_{j}$ in every position $x_{j}$ at time $t_i$ depends on the positions $x_{j-1}$, $x_j$ and $x_{j+1}$ at time $t_{j-1}$. Therefore the behavior of the absolute error is as expected, and we can assume that this also is the reason for that the global relative error stops to grow as it approaches the final position.\\
+\vspace{5mm}
+Because the absolute error in this case reflects the behavior of the accumulated data best, we wanted to analyze it further. As mentioned, in Figure \ref{fig:abs_error_all} we can see the absolute error of the three methods for two different times each. From this we can see how the absolute error changes with time for the three methods, and we can easily see which method is preferable. Backward Euler has a huge absolute error in one of its graphs compared to the two other methods. We can also see that the absolute error of Forward Euler starts out higher than that of Crank-Nicolson, and that it keeps that way for the time that gives the best results. Then we see that the Crank-Nicolson scheme is giving the best accuracy of the three methods, as expected. In Figure \ref{fig:abs_error_crank} the absolute error of the numerical data computed with Crank-Nicolson is graphed at four different times, so that we can see how it is evolving in time. We can see that the absolute error is getting smaller as the time gets higher. From the results in \ref{sect:numerical_results} we can see that it looks like the system has reached equilibrium at $T=0.3$, but we can see from Figure \ref{fig:abs_error_crank} that the error gets smaller and smaller as the time goes, so that the system gets even closer to equilibrium. This is not a fact that we can take for granted, because the the number of steps in time is constant for the four different time interval, which means that the step lengths of the interval with final value $T = 0.5$ is bigger than the step lengths of the other time intervals. Even so, from Figure \ref{fig:abs_error_crank} we can conclude that a time interval with a big final value $T_h$ will give a better precision than a time interval with a lower final value $T_l$.  \\
+
+In Figure \ref{fig:rel_error_MC} and \ref{fig:rel_error_MC_importance} we can see the relative error of the data accumulated from Monte Carlo simulation with constant step length and with continuous step length drawn from the Gaussian distribution respectively. After what we discussed in \ref{sect:numerical_results} it is no surprise to see that the relative error in Figure \ref{fig:rel_error_MC_importance} is higher than the relative error in Figure \ref{fig:rel_error_MC}. The interesting thing here is to compare the relative error in Figure \ref{fig:rel_error_MC} with the relative errors in Figure \ref{fig:rel_error_all}, since the resulting plots of these methods in \ref{sect:numerical_results} seems to be quite satisfactory. Still, we can see that the relative error in the Monte Carlo method is around $10^3$ times bigger than the relative error in the three PDE-solvers. From this we can conclude that the Monte Carlo simulation in this case is wasted, when we can use the three other methods. The Monte Carlo simulation is though a more intuitive method in this case, because random walks and diffusion is closely linked.  
+
+
+
+\begin{figure}[!h]
+\begin{center}
+\includegraphics[scale=0.4]{rel_error_all}
+\caption{\label{fig:rel_error_all}The global relative error of the numerically calculated data, graphed as a function of position in the synaptic cleft. The numerical data are computed by use of Forward Euler method, Backward Euler method and the Crank Nicolson scheme.}
+\end{center}
+\end{figure}
+
 \begin{figure}[!h]
   \begin{minipage}{\linewidth}
     \centering
-    \subcaptionbox{\label{fig:rel_error_all}Relative error.}
-    {\includegraphics[scale=0.27]{rel_error_all}}
-    \subcaptionbox{\label{fig:abs_error_all}Absolute error.}
-     {\includegraphics[scale=0.27]{abs_error_all}}
-    \caption{The global relative error and the global absolute error of the numerically calculated data, graphed as a function of position in the synaptic cleft. The data are computed by use of Forward Euler method, Backward Euler method and the Crank Nicolson scheme.}
+    \subcaptionbox{\label{fig:abs_error_all}Absolute error of the numerical data computed with Forward Euler (F), Backward Euler (B) and Crank-Nicolson (C), for two difference times each.}
+    {\includegraphics[scale=0.27]{abs_error_all}}
+    \subcaptionbox{\label{fig:abs_error_crank}Absolute error of the numerical data computed with Crank-Nicolson for four different times.}
+     {\includegraphics[scale=0.27]{crank_abs_error_4T}}
+    \caption{Absolute error of the numerically calculated data, graphed as a function of position in the synaptic cleft.}
   \end{minipage}
 \end{figure}
 
-Plot where restriction is not met\\
-- Global error in plot. Bigger for each step.
-- Flattens out in top
-- Why is the error much less than our calculated error?
-- Why does not the global error of t increase?
+\begin{figure}[!h]
+  \begin{minipage}{\linewidth}
+    \centering
+    \subcaptionbox{\label{fig:rel_error_MC}Monte Carlo with constant step length.}
+    {\includegraphics[scale=0.27]{relative_error_MC}}
+    \subcaptionbox{\label{fig:rel_error_MC_importance}MonteCarlo with continuous step length drawn from the Gaussian distribution.}
+     {\includegraphics[scale=0.27]{relative_error_MC_importance}}
+    \caption{Relative error of the numerically calculated data, graphed as a function of position in the synaptic cleft. The data are computed by use of brute force Monte Carlo simulation and Monte Carlo with importance sampling. The relative error is computed at time $T = 0.3$.}
+  \end{minipage}
+\end{figure}
 
 \newpage
 \section{Conclusion}
-
+During this project we have analyzed the results generated from five different methods of solving the diffusion equation. We have learned that the Crank-Nicolson method theoretically should give results with better accuracy than Forward and Backward Euler, and we have showed that this also is the fact when solving the diffusion equation. 
 \section{Comments}
+The code used to generate the results in this project can be retrieved on web page \url{<>}\\
 
-\section{References}
+\begin{thebibliography}{9}
+\bibitem{kompendium_morken}
+Morten Hjorth-Jensen, Computational Physics, Fall 2015, Department of Physics, University of Oslo
+
+\bibitem{kompendium_hjorth}
+Knut Mørken, Numerical Algorithms and Digital Representation, August 2013, Department of Mathematics, Centre of Mathematics for Applications, University of Oslo
+
+\bibitem{taylor_series}
 \url{<https://en.wikipedia.org/wiki/Taylor_series>}\\
-\url{<https://en.wikipedia.org/wiki/Fourier_series>}\\
-\url{<https://en.wikipedia.org/wiki/Tridiagonal_matrix>}\\
-\url{<https://en.wikipedia.org/wiki/Toeplitz_matrix>}\\
-Mørken
 
+\bibitem{fourier_series}
+\url{<https://en.wikipedia.org/wiki/Fourier_series>}\\
+
+\bibitem{tridiag_matrix}
+\url{<https://en.wikipedia.org/wiki/Tridiagonal_matrix>}\\
+
+\bibitem{toeplitz_matrix}
+\url{<https://en.wikipedia.org/wiki/Toeplitz_matrix>}\\
+
+\end{thebibliography}
 \end{flushleft}
 \end{document}
 
